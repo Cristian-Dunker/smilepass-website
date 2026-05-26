@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { ctaLinks } from "@/data/nav";
+import RequestDemoButton from "@/components/forms/RequestDemoButton";
 
 /**
  * Final CTA band — verbatim heading/body from current site.
@@ -22,18 +22,15 @@ export default function FinalCtaBand() {
           boost your practice with tools to deliver the best patient experience.
         </p>
         <div className="flex flex-wrap gap-3 justify-center reveal reveal-delay-3">
-          <Link
-            href={ctaLinks.requestDemo}
-            className="inline-flex items-center justify-center gap-2 bg-paper text-brand-purple rounded-[10px] px-7 py-3.5 font-semibold text-[0.95rem] hover:bg-paper/90 transition-colors"
-          >
-            I&apos;m Ready to Get Started
-          </Link>
           <a
             href={ctaLinks.getStarted}
-            className="inline-flex items-center justify-center gap-2 bg-transparent border border-paper/50 text-paper rounded-[10px] px-7 py-3.5 font-semibold text-[0.95rem] hover:bg-paper/10 transition-colors"
+            className="inline-flex items-center justify-center gap-2 bg-paper text-brand-purple rounded-[10px] px-7 py-3.5 font-semibold text-[0.95rem] hover:bg-paper/90 transition-colors"
           >
             Get started free
           </a>
+          <RequestDemoButton className="inline-flex items-center justify-center gap-2 bg-transparent border border-paper/50 text-paper rounded-[10px] px-7 py-3.5 font-semibold text-[0.95rem] hover:bg-paper/10 transition-colors">
+            Get in touch
+          </RequestDemoButton>
         </div>
       </div>
     </section>

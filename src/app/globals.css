@@ -89,6 +89,150 @@
   font-weight: 300;
 }
 
+/* ── PROSE BODY (long-form text wrapper — wiki, policies, future blog) ── */
+.prose-body {
+  font-size: 0.98rem;
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--color-purple-deep) 80%, transparent);
+}
+.prose-body strong { color: var(--color-purple-deep); font-weight: 600; }
+.prose-body a { color: var(--color-brand-purple); font-weight: 500; }
+.prose-body a:hover { color: var(--color-brand-purple-hover); }
+.prose-body ul { padding-left: 1.25rem; }
+.prose-body ul li { list-style: disc; }
+.prose-body ul.list-none li { list-style: none; }
+
+/* ── WIKI ARTICLE (react-markdown output) ─────────────────────────────
+   Applies on top of .prose-body. Scopes typography for elements that
+   react-markdown emits (h2, h3, ol, blockquote, table, code). */
+.wiki-article p { margin: 0 0 1rem; }
+.wiki-article h2 {
+  font-family: var(--font-heading);
+  font-size: 1.55rem;
+  font-weight: 600;
+  color: var(--color-purple-deep);
+  letter-spacing: -0.01em;
+  margin: 2rem 0 0.85rem;
+  line-height: 1.2;
+}
+.wiki-article h3 {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--color-purple-deep);
+  letter-spacing: -0.005em;
+  margin: 1.5rem 0 0.6rem;
+  line-height: 1.25;
+}
+.wiki-article ol { padding-left: 1.4rem; margin: 0.5rem 0 1rem; }
+.wiki-article ol li { list-style: decimal; margin: 0.35rem 0; }
+.wiki-article ul li { margin: 0.35rem 0; }
+.wiki-article blockquote {
+  border-left: 4px solid var(--color-brand-purple);
+  background: color-mix(in srgb, var(--color-brand-purple) 6%, transparent);
+  padding: 0.85rem 1rem;
+  margin: 1rem 0;
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+.wiki-article blockquote p:last-child { margin-bottom: 0; }
+.wiki-article table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  margin: 1rem 0;
+}
+.wiki-article th,
+.wiki-article td {
+  border: 1px solid var(--color-divider);
+  padding: 0.55rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+}
+.wiki-article th {
+  background: var(--color-mist);
+  color: var(--color-purple-deep);
+  font-weight: 600;
+}
+.wiki-article code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  background: var(--color-bone);
+  color: var(--color-purple-deep);
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  border: 1px solid var(--color-divider);
+}
+.wiki-article hr {
+  border: none;
+  border-top: 1px solid var(--color-divider);
+  margin: 2rem 0;
+}
+.wiki-article img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+  border: 1px solid var(--color-divider);
+  box-shadow: 0 10px 28px -14px rgba(37, 33, 86, 0.18);
+  margin: 1.5rem 0;
+  background: var(--color-bone);
+}
+/* Caption styling — markdown emits italicised text immediately after an
+   image as a sibling em; treat the next single-line em as a caption. */
+.wiki-article img + em {
+  display: block;
+  text-align: center;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: color-mix(in srgb, var(--color-purple-deep) 60%, transparent);
+  margin-top: -1rem;
+  margin-bottom: 1.5rem;
+}
+/* When the image fails to load (file not yet provided), browsers render
+   the alt text. Style it as a clear "screenshot pending" placeholder
+   instead of a broken-image icon. */
+.wiki-article img:not([src]),
+.wiki-article img[src=""] {
+  min-height: 220px;
+}
+
+/* ── WIKI CHATBOT (assistant bubble Markdown) ─────────────────────────
+   Tighter typography than the article body — bubbles are constrained. */
+.chatbot-msg p { margin: 0 0 0.5rem; }
+.chatbot-msg p:last-child { margin-bottom: 0; }
+.chatbot-msg a {
+  color: var(--color-brand-purple);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+.chatbot-msg a:hover { color: var(--color-brand-purple-hover); }
+.chatbot-msg ul,
+.chatbot-msg ol { padding-left: 1.1rem; margin: 0.35rem 0 0.6rem; }
+.chatbot-msg ul li { list-style: disc; margin: 0.15rem 0; }
+.chatbot-msg ol li { list-style: decimal; margin: 0.15rem 0; }
+.chatbot-msg strong { color: var(--color-purple-deep); font-weight: 600; }
+.chatbot-msg code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: var(--color-bone);
+  padding: 0.05rem 0.3rem;
+  border-radius: 3px;
+}
+
+@keyframes smilepass-typing {
+  0%, 60%, 100% { opacity: 0.35; transform: translateY(0); }
+  30%           { opacity: 1;    transform: translateY(-2px); }
+}
+
+@keyframes smilepass-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.55); }
+  70%  { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
 /* ── BUTTONS ── */
 .btn-glow {
   border-radius: 10px;

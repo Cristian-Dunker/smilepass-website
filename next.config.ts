@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.resolve(__dirname),
   },
-  // One-hop redirects: keep trailing-slash variants explicit below.
+  // Trailing slashes: treat /foo and /foo/ as equivalent without a redirect.
   skipTrailingSlashRedirect: true,
   images: {
     formats: ["image/avif", "image/webp"],
@@ -18,49 +18,62 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "i.ytimg.com" },
     ],
   },
+  /*
+   * Redirects map legacy live-site URLs (from the WordPress predecessor) onto
+   * the equivalent new page so SEO authority + bookmarks transfer.
+   *
+   * Anything that does NOT have a sensible destination on the new site is
+   * intentionally omitted, so the request returns a real 404 rather than
+   * bouncing the visitor into another 404.
+   */
   redirects: async () => [
-    // Legacy WordPress URLs -> new IA (3-category consolidation)
-    { source: "/membership-plans", destination: "/solutions/recurring-revenue", permanent: true },
-    { source: "/membership-plans/", destination: "/solutions/recurring-revenue", permanent: true },
-    { source: "/payment-plans", destination: "/solutions/patient-financing", permanent: true },
-    { source: "/payment-plans/", destination: "/solutions/patient-financing", permanent: true },
-    { source: "/instant-payment", destination: "/solutions/payment-operations", permanent: true },
-    { source: "/instant-payment/", destination: "/solutions/payment-operations", permanent: true },
+    // Legacy live-site slug for online-payments uses /instant-payment.
+    { source: "/instant-payment", destination: "/online-payments", permanent: true },
+    { source: "/instant-payment/", destination: "/online-payments", permanent: true },
 
-    // Legacy product pages with no dedicated destination → relevant category
-    { source: "/dental-savings-account", destination: "/solutions/patient-financing", permanent: true },
-    { source: "/dental-savings-account/", destination: "/solutions/patient-financing", permanent: true },
-    { source: "/crypto-payments", destination: "/solutions/payment-operations", permanent: true },
-    { source: "/crypto-payments/", destination: "/solutions/payment-operations", permanent: true },
-    { source: "/dental-loans", destination: "/solutions/patient-financing", permanent: true },
-    { source: "/dental-loans/", destination: "/solutions/patient-financing", permanent: true },
-    { source: "/loyalty-referral-programs", destination: "/solutions/recurring-revenue", permanent: true },
-    { source: "/loyalty-referral-programs/", destination: "/solutions/recurring-revenue", permanent: true },
-    { source: "/online-payments", destination: "/solutions/payment-operations", permanent: true },
-    { source: "/online-payments/", destination: "/solutions/payment-operations", permanent: true },
-    { source: "/access-superannuation", destination: "/solutions/patient-financing", permanent: true },
-    { source: "/access-superannuation/", destination: "/solutions/patient-financing", permanent: true },
-    { source: "/crowdfunding", destination: "/solutions/patient-financing", permanent: true },
-    { source: "/crowdfunding/", destination: "/solutions/patient-financing", permanent: true },
+    // Trailing-slash variants of our actual product pages so external links
+    // such as /membership-plans/ from the old WP site still resolve cleanly.
+    { source: "/membership-plans/", destination: "/membership-plans", permanent: true },
+    { source: "/payment-plans/", destination: "/payment-plans", permanent: true },
+    { source: "/online-payments/", destination: "/online-payments", permanent: true },
+    { source: "/pricing/", destination: "/pricing", permanent: true },
+    { source: "/strategy/", destination: "/strategy", permanent: true },
+    { source: "/wiki/", destination: "/wiki", permanent: true },
 
-    // Patient/dentist landings
-    { source: "/patients", destination: "/for-patients", permanent: true },
-    { source: "/patients/", destination: "/for-patients", permanent: true },
-    { source: "/dentists", destination: "/", permanent: true },
-    { source: "/dentists/", destination: "/", permanent: true },
+    // Legacy product slugs without dedicated new pages → funnel to the
+    // closest matching product page.
+    { source: "/dental-savings-account", destination: "/membership-plans", permanent: true },
+    { source: "/dental-savings-account/", destination: "/membership-plans", permanent: true },
+    { source: "/dental-loans", destination: "/payment-plans", permanent: true },
+    { source: "/dental-loans/", destination: "/payment-plans", permanent: true },
+    { source: "/loyalty-referral-programs", destination: "/membership-plans", permanent: true },
+    { source: "/loyalty-referral-programs/", destination: "/membership-plans", permanent: true },
+    { source: "/access-superannuation", destination: "/payment-plans", permanent: true },
+    { source: "/access-superannuation/", destination: "/payment-plans", permanent: true },
+    { source: "/crowdfunding", destination: "/payment-plans", permanent: true },
+    { source: "/crowdfunding/", destination: "/payment-plans", permanent: true },
+    { source: "/crypto-payments", destination: "/online-payments", permanent: true },
+    { source: "/crypto-payments/", destination: "/online-payments", permanent: true },
 
-    // CTAs / forms
-    { source: "/request-a-demo", destination: "/request-demo", permanent: true },
-    { source: "/request-a-demo/", destination: "/request-demo", permanent: true },
+    // Forms / CTAs / contact: legacy slugs → current routes.
+    { source: "/request-a-demo", destination: "/contact", permanent: true },
+    { source: "/request-a-demo/", destination: "/contact", permanent: true },
+    { source: "/request-demo", destination: "/contact", permanent: true },
+    { source: "/request-demo/", destination: "/contact", permanent: true },
     { source: "/contact-us", destination: "/contact", permanent: true },
     { source: "/contact-us/", destination: "/contact", permanent: true },
 
-    // FAQs / Legal
-    { source: "/faqs/", destination: "/faqs", permanent: true },
-    { source: "/privacy-policy", destination: "/policies/privacy", permanent: true },
-    { source: "/privacy-policy/", destination: "/policies/privacy", permanent: true },
-    { source: "/terms-of-use", destination: "/policies/terms", permanent: true },
-    { source: "/terms-of-use/", destination: "/policies/terms", permanent: true },
+    // Legacy patient/dentist landings → home (no replacement page exists yet).
+    { source: "/patients", destination: "/", permanent: true },
+    { source: "/patients/", destination: "/", permanent: true },
+    { source: "/dentists", destination: "/", permanent: true },
+    { source: "/dentists/", destination: "/", permanent: true },
+    { source: "/benefits", destination: "/", permanent: true },
+    { source: "/benefits/", destination: "/", permanent: true },
+    { source: "/how-it-works", destination: "/", permanent: true },
+    { source: "/how-it-works/", destination: "/", permanent: true },
+    { source: "/become-a-smilepass-dentist", destination: "/", permanent: true },
+    { source: "/become-a-smilepass-dentist/", destination: "/", permanent: true },
   ],
 };
 

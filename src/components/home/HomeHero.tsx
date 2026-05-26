@@ -1,17 +1,19 @@
 import Link from "next/link";
 import Image from "next/image";
 import { solutions, ctaLinks } from "@/data/nav";
+import RequestDemoButton from "@/components/forms/RequestDemoButton";
 
 /**
  * Home hero — matches `smilepass.com.au` hero block.
  *
  * Layout: left text column (eyebrow + tagline + body + dual primary CTAs)
  *         right illustration (downloaded from prod /uploads/2024/04/Untitled-700-x-831.png)
- *         below: horizontal scrollable chip list of 9 solutions.
+ *         below: horizontal scrollable chip list of solutions (count comes
+ *         from the registry — keep the eyebrow copy in sync).
  *
  * CTA hierarchy (per user feedback):
- *   - `Get started free` → `btn-primary` (solid brand-purple)
- *   - `Request a Demo`   → `btn-outline-purple` (transparent + purple border/text)
+ *   - `Get started free` → `btn-primary` (solid brand-purple, primary path — self-serve signup)
+ *   - `Get in touch`     → `btn-outline-purple` (soft secondary — opens contact modal for people who want a hand)
  */
 export default function HomeHero() {
   return (
@@ -48,9 +50,7 @@ export default function HomeHero() {
             <a href={ctaLinks.getStarted} className="btn-primary text-[0.95rem]">
               Get started free
             </a>
-            <Link href={ctaLinks.requestDemo} className="btn-outline-purple text-[0.95rem]">
-              Request a Demo
-            </Link>
+            <RequestDemoButton className="btn-outline-purple text-[0.95rem]" />
           </div>
           <p className="mt-5 text-[0.82rem] text-purple-deep/55 reveal reveal-delay-4">
             No credit card required · Built for Australian dental practices
@@ -75,7 +75,7 @@ export default function HomeHero() {
       {/* Solution chips strip — centered block */}
       <div className="relative max-w-7xl mx-auto mt-12 lg:mt-16 pt-8 border-t border-divider reveal reveal-delay-4">
         <p className="text-center text-[0.7rem] font-medium tracking-[0.16em] uppercase text-purple-deep/55 mb-4">
-          All-in-one platform · 9 solutions
+          All-in-one platform · {solutions.length} solutions
         </p>
         <div className="flex flex-wrap justify-center gap-2.5">
           {solutions.map((sol) => (

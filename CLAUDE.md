@@ -8,6 +8,21 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 The intent is **structural parity** with the current production site, not a redesign: same menu, same footer hierarchy, same 9 solution names, same hero copy, same section order. The improvements that fall out for free are: (a) actual dedicated pages per solution instead of 9 menu items all pointing to `/payment-plans/`, (b) no placeholder copy in production, (c) modern stack with real performance budget, (d) the brand purples extracted directly from the official logo.
 
+## ⚠️ Source-of-truth note (drift to be aware of)
+
+The information architecture **pivoted from 9 product pages to 3 category hubs** mid-build. The redirect map in `next.config.ts` is the canonical statement of the new IA:
+
+- `/solutions/recurring-revenue` ← `membership-plans`, `loyalty-referral-programs`
+- `/solutions/patient-financing` ← `payment-plans`, `dental-loans`, `dental-savings-account`, `access-superannuation`, `crowdfunding`
+- `/solutions/payment-operations` ← `instant-payment`, `online-payments`, `crypto-payments`
+
+What this means for current state:
+
+- The `solutions` registry in `src/data/solutions/index.tsx` still has the **9 legacy entries** with the old per-product `href`s. Those hrefs now 301 via `next.config.ts`. Treat the registry as content data (copy + icons), not as a routing source until it is restructured into the 3-category model.
+- `sitemap.ts` currently emits the 9 legacy slugs (each 301s) and 10 static pages that don't exist yet. Sitemap is **drifted** — do not treat it as authoritative for "what pages exist".
+- Don't create `src/app/{membership-plans,payment-plans,dental-loans,...}/page.tsx` files. They should stay redirects. New work should target `src/app/solutions/{recurring-revenue|patient-financing|payment-operations}/page.tsx`.
+- When in doubt about routing, read `next.config.ts` first. When in doubt about which solutions belong where, read the redirect map in `next.config.ts`.
+
 ## Tech stack
 
 | Layer | Choice |
@@ -30,14 +45,17 @@ The intent is **structural parity** with the current production site, not a rede
 
 ```bash
 npm install
-npm run dev      # http://localhost:3000
-npm run build    # production build
-npm start        # serve production build
-npm run lint     # eslint
-npx tsc --noEmit # type-check without emitting
+npm run dev                       # default http://localhost:3000
+npm run dev -- --port 3003        # use this if another Next dev server already owns :3000
+npm run build                     # production build
+npm start                         # serve production build
+npm run lint                      # eslint
+npx tsc --noEmit                  # type-check without emitting
 ```
 
 `npm run build` is the source of truth for "ready for QA". `dev` mode masks classes of errors (server-component boundary violations, font-loading failures, static-prerender errors) that only surface at build time.
+
+If you run multiple Next.js projects locally, pass `--port` rather than killing whatever owns `:3000` — other repos in this workspace bind it for their own dev servers.
 
 ## Architecture
 
@@ -105,6 +123,13 @@ smilepass-web/
 
 **No flat `components/` root.** If you ever feel the urge to drop a `.tsx` directly under `src/components/`, ask which page or pages will use it — then pick `common/` (multi-page) or a page subfolder.
 
+### `next.config.ts` — what's pinned and why
+
+- `turbopack.root = path.resolve(__dirname)` — pins the workspace root to this project. There's an unrelated `package-lock.json` one directory up that Next.js otherwise picks up as a workspace root and produces wrong path resolution. Don't remove this without verifying both Turbopack dev and `next build` from a fresh clone.
+- `skipTrailingSlashRedirect: true` — every legacy WordPress URL is listed twice in `redirects()`, with and without trailing slash, so each request takes **one** 301 hop instead of two.
+- `images.remotePatterns` whitelists `i.ytimg.com` for `YouTubeFacade` thumbnails. Add a new entry whenever a remote image source appears.
+- `redirects()` is the canonical legacy-URL → new-IA map. See the drift note above — this is where the 9-products-to-3-hubs decision actually lives.
+
 ### Brand tokens (`src/app/globals.css`)
 
 Extracted from the official logo via pixel-sampling:
@@ -135,13 +160,29 @@ Add `.reveal-delay-1` … `.reveal-delay-4` to stagger entrances (0.1s steps).
 
 **Critical detail:** `RevealAnimations` watches `usePathname()` and re-observes on every route change. Without this, navigating back to a page leaves all `.reveal` elements stuck at `opacity: 0` because the observer was bound to the previous page's nodes. If you ever change this component, preserve the pathname dependency.
 
-### Forms (Phase 2)
+### Forms
 
-The pattern is **Server Actions + Zod**. One Zod schema per form lives in `src/lib/schemas/`. The same schema is used client-side (form validation) and server-side (action input parsing). Server Actions live in `src/app/actions/` and call Resend to deliver the email.
-
-**Phase 1 (current):** UI is built, submit is stubbed (logs to console). **Phase 2:** wire Server Actions to Resend, validate via Zod, return `{ success, error? }` to the client.
+The pattern is **Server Actions + Zod**. One Zod schema per form lives in `src/lib/schemas/`. The same schema is used client-side (form validation) and server-side (action input parsing). Server Actions live in `src/app/actions/`.
 
 DTO-at-boundary is non-negotiable here — never trust raw form data. The schema is the contract.
+
+#### Request a Demo modal (live)
+
+The "Request a Demo" CTA is a modal, not a route. Wiring:
+
+- **Provider:** `RequestDemoProvider` (`src/components/forms/RequestDemoProvider.tsx`) is mounted once in `src/app/layout.tsx`. It owns open/close state and renders the modal as a portal child of `<body>`.
+- **Button:** `RequestDemoButton` (`src/components/forms/RequestDemoButton.tsx`) is a tiny client component that calls `useRequestDemo().open()`. Use it everywhere a "Request a Demo" CTA appears so server-component parents stay server components. Accepts the same `className` you'd pass to the original `<Link>`.
+- **Modal:** `RequestDemoModal` (`src/components/forms/RequestDemoModal.tsx`) wraps the shared `Modal` primitive (`src/components/common/Modal.tsx`) with the form.
+- **Schema:** `src/lib/schemas/request-demo.ts` (Zod — name, email, phone, practiceWebsite, optional sourcePage).
+- **Action:** `src/app/actions/send-request-demo.ts` — POSTs to the Notion REST API (`/v1/pages`) to create a row in the **Demo Requests** database that lives inside the **SmilePass HUB** Notion page.
+- **Notion database ID:** `00c05ce69a1e435da2bde4a6dcd04572` (data source `40895c99-5f90-4b47-a84f-f7fd9e442a4a`). Columns: Name (title), Email, Phone, Practice website, Source page, Status (defaults to "New"), Submitted at (created time).
+- **Env vars:** `NOTION_API_KEY` (internal integration secret) + `NOTION_DEMO_REQUESTS_DB_ID`. See `.env.example` and the inline notes in `.env.local` for the integration setup steps.
+
+When the env vars are missing the action logs to the console and returns a friendly error string — the form will not silently succeed.
+
+#### Pending forms (Phase 2)
+
+Newsletter signup (Footer) and Contact form (`/contact` page when created) still need wiring. They'll follow the same pattern: schema → Server Action → Resend (for transactional email) or Notion (for lead capture), depending on the destination decision.
 
 ---
 
@@ -206,15 +247,17 @@ Dev mode masks errors that only show up in production. If your change touches a 
 
 ## Adding new things
 
-### A new solution
+### A new solution (current 3-category IA)
+
+The current IA has **3 hub pages**, each grouping multiple solutions. Adding a new solution means adding it to one of the existing hubs — not creating a new per-product page. (See the drift note at the top for what changed.)
 
 1. Add an inline SVG icon component in `src/data/solutions/icons.tsx` (follow the existing weight-1.6 stroke style).
-2. Add an entry to the `solutions` array in `src/data/solutions/index.tsx`:
+2. Add an entry to the `solutions` array in `src/data/solutions/index.tsx`. **Set `href` to the parent category hub**, not a per-product slug:
    ```tsx
    {
      slug: "new-thing",
      label: "New Thing",
-     href: "/new-thing",
+     href: "/solutions/patient-financing",   // pick the category it belongs to
      tagline: "Short one-liner for nav dropdowns.",
      headline: "Headline for the solution's hero",
      description: "Full paragraph for the home tab / page hero.",
@@ -223,10 +266,12 @@ Dev mode masks errors that only show up in production. If your change touches a 
      Icon: NewThingIcon,
    }
    ```
-3. Create the page at `src/app/new-thing/page.tsx` that renders `<SolutionPageTemplate data={solution} />`.
-4. Add the URL to `src/app/sitemap.ts` if it's already not flowing from the registry.
+3. Update the corresponding hub page at `src/app/solutions/<category>/page.tsx` to surface the new solution (section, card, or accordion entry, depending on the hub layout).
+4. If a legacy per-product URL exists in the wild for this solution, add a `301` to `next.config.ts` `redirects()` pointing the legacy slug at the hub.
 
-That's it. The header dropdown, footer, home tabs, home chips strip — all pick it up automatically.
+The header dropdown, footer, home tabs, and home chips strip read from the registry, so they pick the new entry up automatically.
+
+**Adding a 4th category hub** (rare — the IA is intentionally 3): create `src/app/solutions/<new-category>/page.tsx`, list it in `src/app/sitemap.ts`, and decide whether `primaryNav` in `src/data/nav.ts` needs to change (today the "Solutions" dropdown is registry-driven).
 
 ### A new top-level page (e.g. `/pricing`)
 
@@ -281,13 +326,16 @@ Use `next/image` with `fill` + `sizes` for responsive images. Set `priority` on 
 
 ### 🚧 Pending (next phases)
 
-- **9 solution pages** — each one renders `SolutionPageTemplate` with its own data. Slugs match the registry: `/membership-plans`, `/payment-plans`, `/dental-loans`, `/dental-savings-account`, `/online-payments`, `/access-superannuation`, `/crypto-payments`, `/loyalty-referral-programs`, `/crowdfunding`.
+- **3 solution hub pages** — `src/app/solutions/recurring-revenue/page.tsx`, `src/app/solutions/patient-financing/page.tsx`, `src/app/solutions/payment-operations/page.tsx`. Each hub presents the solutions grouped under it (see the redirect map in `next.config.ts` for the grouping). The 9 legacy per-product URLs already 301 to these hubs; do not create per-product pages.
+- **Registry restructure** — once the 3 hubs exist, update `src/data/solutions/index.tsx` so every entry's `href` points to its category hub rather than a legacy product slug, or split the registry into a `solutions` array (content) plus a `categoryHubs` array (routing) if both are still needed.
+- **Sitemap rebuild** — `src/app/sitemap.ts` currently emits the 9 legacy slugs (each 301s) and 10 static pages that don't exist. Rewrite it to emit only real, terminal URLs: `/`, the 3 hubs, and whichever static pages have actually shipped.
+- **For-patients page** (`/for-patients`) — replaces the legacy `/patients` URL (already 301'd in `next.config.ts`).
 - **Pricing page** (`/pricing`) — `PricingTable` with Monthly/Yearly toggle. Awaiting real tier/price data.
 - **Contact + Request Demo pages** (`/contact`, `/request-demo`) — forms with Zod + Server Actions; wire to Resend when API key arrives.
-- **Standalone pages** — `/patients`, `/benefits`, `/how-it-works`, `/faqs`, `/policies/privacy`, `/policies/terms`.
+- **Standalone pages** — `/benefits`, `/how-it-works`, `/faqs`, `/policies/privacy`, `/policies/terms`.
 - **Resend wire-up** — needs `RESEND_API_KEY`, verified `from:` domain, and a destination inbox.
 - **Real assets** — partner logos, testimonial photos/names, hero secondary imagery.
-- **Solution page imagery** — one image per solution for the home tabs (currently falling back to a styled placeholder).
+- **Solution imagery** — one image per solution for the home tabs (currently falling back to a styled placeholder).
 - **GTM ID** — set `NEXT_PUBLIC_GTM_ID` in production to enable Analytics.
 - **Auth + patient portal** — separate phase entirely; not in the marketing site.
 

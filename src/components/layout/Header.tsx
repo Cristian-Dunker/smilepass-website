@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { primaryNav, solutions, ctaLinks } from "@/data/nav";
+import RequestDemoButton from "@/components/forms/RequestDemoButton";
 
 const SCROLL_THRESHOLD = 50;
 
@@ -13,9 +14,10 @@ const SCROLL_THRESHOLD = 50;
  * Behavior:
  *   - Transparent over hero at the top.
  *   - Background fades to `paper` after 50px scroll (RAF-throttled).
- *   - Solutions item opens a mega-dropdown listing all 9 solutions in a 3×3 grid.
+ *   - Solutions item opens a mega-dropdown listing every solution in the
+ *     registry. Grid uses 3 columns; row count flows from the registry length.
  *   - Mobile: hamburger opens full-viewport menu with nested 9-item Solutions list.
- *   - Three desktop right CTAs (matches current site): Log in, Request a Demo, Get started free.
+ *   - Three desktop right CTAs: Log in, Get in touch (soft secondary), Get started free (primary, self-serve signup).
  */
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -89,15 +91,25 @@ export default function Header() {
           {primaryNav.map((item) => (
             <div key={item.label} className="relative">
               {item.hasDropdown ? (
-                <button
-                  onClick={() => toggleDropdown(item.label)}
-                  className="px-4 py-2 text-[0.92rem] font-medium text-ink hover:text-brand-purple transition-colors flex items-center gap-1"
-                  aria-expanded={openDropdown === item.label}
-                  aria-haspopup="true"
-                >
-                  {item.label}
-                  <Chevron open={openDropdown === item.label} />
-                </button>
+                <div className="flex items-center text-[0.92rem] font-medium text-ink">
+                  <Link
+                    href={item.href}
+                    onClick={() => setOpenDropdown(null)}
+                    className="pl-4 pr-1 py-2 hover:text-brand-purple transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => toggleDropdown(item.label)}
+                    className="pl-1 pr-3 py-2 hover:text-brand-purple transition-colors flex items-center"
+                    aria-expanded={openDropdown === item.label}
+                    aria-haspopup="true"
+                    aria-label={`Open ${item.label} menu`}
+                  >
+                    <Chevron open={openDropdown === item.label} />
+                  </button>
+                </div>
               ) : (
                 <Link
                   href={item.href}
@@ -118,9 +130,7 @@ export default function Header() {
           >
             Log in
           </a>
-          <Link href={ctaLinks.requestDemo} className="btn-outline-purple text-[0.85rem] !py-2 !px-4">
-            Request a Demo
-          </Link>
+          <RequestDemoButton className="btn-outline-purple text-[0.85rem] !py-2 !px-4" />
           <a href={ctaLinks.getStarted} className="btn-primary text-[0.85rem] !py-2 !px-4">
             Get started free
           </a>
@@ -137,7 +147,7 @@ export default function Header() {
         </button>
       </div>
 
-      {/* Solutions mega-dropdown (desktop) — 9 solutions in 3×3 grid */}
+      {/* Solutions mega-dropdown (desktop) — registry items in a 3-col grid */}
       {openDropdown === "Solutions" && (
         <div className="hidden lg:block absolute left-0 right-0 top-full bg-paper border-b border-ink/8 shadow-lg">
           <div className="max-w-7xl mx-auto px-10 py-8 grid grid-cols-3 gap-x-6 gap-y-3">
@@ -162,13 +172,16 @@ export default function Header() {
       {mobileOpen && (
         <div className="lg:hidden absolute left-0 right-0 top-full bg-paper border-b border-ink/8 shadow-lg max-h-[calc(100vh-68px)] overflow-y-auto">
           <nav className="px-6 py-6 flex flex-col gap-1">
-            {primaryNav.map((item) =>
-              item.hasDropdown ? (
-                <MobileSolutionsBlock
-                  key={item.label}
-                  onLinkClick={() => setMobileOpen(false)}
-                />
-              ) : (
+            {primaryNav.map((item) => {
+              if (item.hasDropdown && item.label === "Solutions") {
+                return (
+                  <MobileSolutionsBlock
+                    key={item.label}
+                    onLinkClick={() => setMobileOpen(false)}
+                  />
+                );
+              }
+              return (
                 <Link
                   key={item.label}
                   href={item.href}
@@ -177,8 +190,8 @@ export default function Header() {
                 >
                   {item.label}
                 </Link>
-              )
-            )}
+              );
+            })}
             <div className="flex flex-col gap-3 mt-6 pb-2">
               <a
                 href={ctaLinks.login}
@@ -187,13 +200,10 @@ export default function Header() {
               >
                 Log in
               </a>
-              <Link
-                href={ctaLinks.requestDemo}
+              <RequestDemoButton
                 className="btn-outline-purple w-full"
                 onClick={() => setMobileOpen(false)}
-              >
-                Request a Demo
-              </Link>
+              />
               <a
                 href={ctaLinks.getStarted}
                 className="btn-primary w-full"

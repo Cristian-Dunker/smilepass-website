@@ -18,10 +18,12 @@ export interface PrimaryNavItem {
   hasDropdown?: boolean;
 }
 
-/** Top-nav items — matches current site exactly (Solutions ▾ · Pricing · Contact). */
+/** Top-nav items — Solutions ▾ · Pricing · Wiki · Strategy · Contact. */
 export const primaryNav: PrimaryNavItem[] = [
   { label: "Solutions", href: solutions[0].href, hasDropdown: true },
   { label: "Pricing", href: "/pricing" },
+  { label: "Wiki", href: "/wiki" },
+  { label: "Strategy", href: "/strategy" },
   { label: "Contact", href: "/contact" },
 ];
 
@@ -46,8 +48,8 @@ export const footerSections = [
   {
     title: "Get In Touch",
     items: [
-      { label: "Contact", href: "/contact" },
-      { label: "Become a SmilePass Dentist", href: "/request-demo" },
+      { label: "Contact us", href: "/contact" },
+      { label: "Start free", href: "https://app.smilepass.com.au/pages/authentication/first-access" },
     ],
   },
 ];
