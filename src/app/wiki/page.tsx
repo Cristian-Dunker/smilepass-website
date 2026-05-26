@@ -75,8 +75,9 @@ export default function WikiIndexPage() {
                   return (
                     <Link
                       key={track.id}
+                      id={track.id}
                       href={firstSlug ? `/wiki/${firstSlug}` : "/wiki"}
-                      className="group bg-bone rounded-2xl border border-divider p-7 hover:border-brand-purple hover:bg-brand-purple/[0.04] transition-colors reveal"
+                      className="group bg-bone rounded-2xl border border-divider p-7 hover:border-brand-purple hover:bg-brand-purple/[0.04] transition-colors reveal scroll-mt-24"
                       style={{ animationDelay: `${idx * 60}ms` }}
                     >
                       <p className="text-[0.7rem] font-semibold tracking-[0.18em] uppercase text-brand-purple mb-3">

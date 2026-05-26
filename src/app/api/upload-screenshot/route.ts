@@ -18,7 +18,8 @@ import path from "node:path";
  */
 
 const ALLOWED_FILENAME = /^[a-z0-9][a-z0-9-]{1,80}\.png$/;
-const MAX_BASE64_LEN = 4 * 1024 * 1024; // ~4MB encoded ≈ 3MB binary
+const ALLOWED_SUBDIRS = new Set(["wiki", "strategy"]);
+const MAX_BASE64_LEN = 6 * 1024 * 1024; // ~6MB encoded ≈ 4.5MB binary
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -48,9 +49,10 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "invalid json" }, { status: 400, headers: corsHeaders });
   }
 
-  const { filename, dataUrl } = (body ?? {}) as {
+  const { filename, dataUrl, subdir } = (body ?? {}) as {
     filename?: string;
     dataUrl?: string;
+    subdir?: string;
   };
 
   if (typeof filename !== "string" || !ALLOWED_FILENAME.test(filename)) {
@@ -59,6 +61,7 @@ export async function POST(req: Request) {
       { status: 400, headers: corsHeaders },
     );
   }
+  const targetSubdir = typeof subdir === "string" && ALLOWED_SUBDIRS.has(subdir) ? subdir : "wiki";
   if (typeof dataUrl !== "string" || !dataUrl.startsWith("data:image/png;base64,")) {
     return NextResponse.json(
       { error: "dataUrl must be a base64-encoded PNG data URL" },
@@ -80,7 +83,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "invalid base64" }, { status: 400, headers: corsHeaders });
   }
 
-  const targetDir = path.join(process.cwd(), "public", "images", "wiki");
+  const targetDir = path.join(process.cwd(), "public", "images", targetSubdir);
   const targetPath = path.join(targetDir, filename);
 
   try {
@@ -92,7 +95,7 @@ export async function POST(req: Request) {
   }
 
   return NextResponse.json(
-    { success: true, savedTo: `/images/wiki/${filename}`, bytes: buffer.length },
+    { success: true, savedTo: `/images/${targetSubdir}/${filename}`, bytes: buffer.length },
     { status: 200, headers: corsHeaders },
   );
 }

@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1366 800" role="img" aria-label="SmilePass Custom Discounts and Promo Code List">
+  <defs>
+    <style>
+      .ff{font-family:'Inter','Helvetica Neue',Arial,sans-serif}
+      .nav-mute{font-size:13px;fill:#7B789C;font-weight:400}
+      .nav-active{font-size:13px;fill:#7D7AF2;font-weight:600}
+      .h1{font-size:20px;fill:#252156;font-weight:600;letter-spacing:-.01em}
+      .h2{font-size:15px;fill:#252156;font-weight:600}
+      .lbl{font-size:11px;fill:#5F5C7F;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+      .muted{font-size:12.5px;fill:#7B789C}
+      .body{font-size:13.5px;fill:#252156}
+      .code-text{font-size:13.5px;fill:#252156;font-weight:500;font-family:'JetBrains Mono','Consolas',monospace;letter-spacing:.02em}
+      .name-link{font-size:13.5px;fill:#7D7AF2;font-weight:500}
+      .btn-text{font-size:12px;fill:#FFFFFF;font-weight:600;letter-spacing:.04em}
+      .badge-active{font-size:10px;fill:#0E8A4F;font-weight:700;letter-spacing:.08em}
+      .badge-sched{font-size:10px;fill:#9C6F00;font-weight:700;letter-spacing:.08em}
+    </style>
+  </defs>
+  <rect width="1366" height="800" fill="#F6F4FB"/>
+
+  <!-- Left sidebar -->
+  <rect x="0" y="0" width="232" height="800" fill="#FFFFFF"/>
+  <rect x="32" y="32" width="32" height="32" rx="8" fill="#7D7AF2"/>
+  <text x="74" y="56" class="ff" font-size="20" fill="#252156" font-weight="700">SmilePass</text>
+  <text x="40" y="125" class="ff nav-mute">⌂ Home</text>
+  <text x="40" y="173" class="ff nav-mute">⌽ Membership</text>
+  <text x="40" y="213" class="ff nav-mute">$ Payment Plan</text>
+  <text x="40" y="253" class="ff nav-mute">◔ Reporting</text>
+  <text x="40" y="745" class="ff nav-mute">? Support</text>
+  <rect x="20" y="755" width="192" height="40" rx="8" fill="#F1F0FD"/>
+  <text x="40" y="780" class="ff nav-active">⚙ Settings</text>
+
+  <!-- Top action bar -->
+  <rect x="252" y="20" width="1094" height="56" rx="14" fill="#FFFFFF" stroke="#E5E3F0"/>
+  <circle cx="290" cy="48" r="18" fill="#7D7AF2"/>
+  <text x="290" y="54" class="ff" font-size="18" fill="#FFFFFF" font-weight="600" text-anchor="middle">+</text>
+  <rect x="1024" y="32" width="132" height="32" rx="16" fill="#7D7AF2"/>
+  <text x="1090" y="52" class="ff" font-size="12" fill="#FFFFFF" font-weight="600" text-anchor="middle">UPGRADE NOW</text>
+  <text x="1248" y="44" class="ff" font-size="12" fill="#252156" font-weight="600">Dr Test</text>
+  <text x="1248" y="58" class="ff" font-size="10" fill="#7B789C">Practice owner</text>
+
+  <!-- Settings sub-sidebar -->
+  <rect x="252" y="92" width="232" height="690" rx="14" fill="#FFFFFF" stroke="#E5E3F0"/>
+  <text x="276" y="128" class="ff nav-mute">⌕ My Profile</text>
+  <text x="276" y="168" class="ff nav-mute">⌽ Logins &amp; Permissions</text>
+  <text x="276" y="208" class="ff nav-mute">⌂ Company</text>
+  <text x="276" y="248" class="ff nav-mute">⌖ Locations</text>
+  <text x="276" y="288" class="ff nav-mute">↥ Import Patients</text>
+  <text x="276" y="328" class="ff nav-mute">✎ Membership Builder</text>
+  <text x="276" y="368" class="ff nav-mute">✎ Payment Plan Builder</text>
+  <text x="276" y="408" class="ff nav-mute">⊕ Addons Builder</text>
+  <rect x="272" y="426" width="192" height="42" rx="8" fill="#7D7AF2"/>
+  <text x="288" y="449" class="ff" font-size="13" fill="#FFFFFF" font-weight="600">⌖ Custom Discounts &amp;</text>
+  <text x="304" y="464" class="ff" font-size="13" fill="#FFFFFF" font-weight="600">Code</text>
+  <text x="276" y="488" class="ff nav-mute">▤ Billing and Payout</text>
+  <text x="276" y="528" class="ff nav-mute">⛌ Promotional Material</text>
+  <text x="276" y="568" class="ff nav-mute">⌬ Subscription</text>
+  <text x="276" y="608" class="ff nav-mute">⊗ Integrations</text>
+
+  <!-- TOP: Referral + Dependent Discounts panel -->
+  <rect x="504" y="92" width="842" height="208" rx="14" fill="#FFFFFF" stroke="#E5E3F0"/>
+  <text x="925" y="138" class="ff h1" text-anchor="middle">Referral Program &amp; Dependent Discounts</text>
+  <text x="925" y="172" class="ff" font-size="13.5" fill="#5F5C7F" text-anchor="middle">Customise and adjust discounts for your referral program and dependents added by patients.</text>
+  <text x="925" y="194" class="ff" font-size="13.5" fill="#5F5C7F" text-anchor="middle">Reward referrals and offer tailored benefits for families to enhance loyalty.</text>
+  <!-- Three preview badges -->
+  <rect x="586" y="216" width="222" height="36" rx="8" fill="#F1F0FD"/>
+  <circle cx="606" cy="234" r="6" fill="#7D7AF2"/>
+  <text x="622" y="239" class="ff" font-size="12.5" fill="#252156" font-weight="500">Dependent program · 10%</text>
+  <rect x="816" y="216" width="222" height="36" rx="8" fill="#F1F0FD"/>
+  <circle cx="836" cy="234" r="6" fill="#7D7AF2"/>
+  <text x="852" y="239" class="ff" font-size="12.5" fill="#252156" font-weight="500">Referral program · 10% · 12 mo</text>
+  <rect x="1046" y="216" width="222" height="36" rx="8" fill="#F4F2FB"/>
+  <circle cx="1066" cy="234" r="6" fill="#7B789C"/>
+  <text x="1082" y="239" class="ff" font-size="12.5" fill="#5F5C7F">Family bundle · auto</text>
+  <!-- Manage Discounts button -->
+  <rect x="843" y="264" width="166" height="36" rx="10" fill="#7D7AF2"/>
+  <text x="926" y="287" class="ff btn-text" text-anchor="middle">MANAGE DISCOUNTS</text>
+
+  <!-- BOTTOM: Promo Code List panel -->
+  <rect x="504" y="320" width="842" height="462" rx="14" fill="#FFFFFF" stroke="#E5E3F0"/>
+  <text x="528" y="356" class="ff h1">Promo Code List</text>
+  <rect x="1262" y="332" width="80" height="36" rx="10" fill="#7D7AF2"/>
+  <text x="1302" y="355" class="ff btn-text" text-anchor="middle">+ ADD</text>
+
+  <!-- Table header -->
+  <line x1="528" y1="380" x2="1322" y2="380" stroke="#E5E3F0"/>
+  <text x="528" y="406" class="ff lbl">Name</text>
+  <text x="900" y="406" class="ff lbl">Code</text>
+  <text x="1060" y="406" class="ff lbl">Status</text>
+  <text x="1190" y="406" class="ff lbl">Active / Cap</text>
+  <text x="1322" y="406" class="ff lbl" text-anchor="end">Actions</text>
+  <line x1="528" y1="416" x2="1322" y2="416" stroke="#E5E3F0"/>
+
+  <!-- Row 1: FOUNDER50 -->
+  <text x="528" y="448" class="ff name-link">Founder Pricing Launch</text>
+  <text x="900" y="448" class="ff code-text">FOUNDER50</text>
+  <rect x="1042" y="434" width="74" height="20" rx="10" fill="#E5F4EC"/>
+  <text x="1079" y="448" class="ff badge-active" text-anchor="middle">ACTIVE</text>
+  <text x="1190" y="448" class="ff body" font-weight="600">47 / 50</text>
+  <text x="1322" y="448" class="ff muted" text-anchor="end">⋮</text>
+  <line x1="528" y1="464" x2="1322" y2="464" stroke="#F4F2FB"/>
+
+  <!-- Row 2: BACKTOSCHOOL -->
+  <text x="528" y="496" class="ff name-link">School Holiday Family Offer</text>
+  <text x="900" y="496" class="ff code-text">BACKTOSCHOOL</text>
+  <rect x="1036" y="482" width="86" height="20" rx="10" fill="#FFF6E0"/>
+  <text x="1079" y="496" class="ff badge-sched" text-anchor="middle">SCHEDULED</text>
+  <text x="1190" y="496" class="ff body">0 / 100</text>
+  <text x="1322" y="496" class="ff muted" text-anchor="end">⋮</text>
+  <line x1="528" y1="512" x2="1322" y2="512" stroke="#F4F2FB"/>
+
+  <!-- Row 3: WEDDING2026 -->
+  <text x="528" y="544" class="ff name-link">Wedding Whitening Bundle</text>
+  <text x="900" y="544" class="ff code-text">WEDDING2026</text>
+  <rect x="1042" y="530" width="74" height="20" rx="10" fill="#E5F4EC"/>
+  <text x="1079" y="544" class="ff badge-active" text-anchor="middle">ACTIVE</text>
+  <text x="1190" y="544" class="ff body" font-weight="600">12 / —</text>
+  <text x="1322" y="544" class="ff muted" text-anchor="end">⋮</text>
+  <line x1="528" y1="560" x2="1322" y2="560" stroke="#F4F2FB"/>
+
+  <!-- Row 4: REFERRAL10 -->
+  <text x="528" y="592" class="ff name-link">Referral Base Discount</text>
+  <text x="900" y="592" class="ff code-text">REFERRAL10</text>
+  <rect x="1042" y="578" width="74" height="20" rx="10" fill="#E5F4EC"/>
+  <text x="1079" y="592" class="ff badge-active" text-anchor="middle">ACTIVE</text>
+  <text x="1190" y="592" class="ff body" font-weight="600">47 / ∞</text>
+  <text x="1322" y="592" class="ff muted" text-anchor="end">⋮</text>
+  <line x1="528" y1="608" x2="1322" y2="608" stroke="#F4F2FB"/>
+
+  <!-- Row 5: WORKMATE10 -->
+  <text x="528" y="640" class="ff name-link">Corporate Workplace</text>
+  <text x="900" y="640" class="ff code-text">WORKMATE10</text>
+  <rect x="1042" y="626" width="74" height="20" rx="10" fill="#E5F4EC"/>
+  <text x="1079" y="640" class="ff badge-active" text-anchor="middle">ACTIVE</text>
+  <text x="1190" y="640" class="ff body" font-weight="600">38 / —</text>
+  <text x="1322" y="640" class="ff muted" text-anchor="end">⋮</text>
+  <line x1="528" y1="656" x2="1322" y2="656" stroke="#F4F2FB"/>
+
+  <!-- Row 6: HYGIENE-ONLY -->
+  <text x="528" y="688" class="ff name-link">Hygiene Only Starter</text>
+  <text x="900" y="688" class="ff code-text">HYGIENE</text>
+  <rect x="1042" y="674" width="74" height="20" rx="10" fill="#E5F4EC"/>
+  <text x="1079" y="688" class="ff badge-active" text-anchor="middle">ACTIVE</text>
+  <text x="1190" y="688" class="ff body" font-weight="600">23 / —</text>
+  <text x="1322" y="688" class="ff muted" text-anchor="end">⋮</text>
+
+  <line x1="528" y1="708" x2="1322" y2="708" stroke="#F4F2FB"/>
+  <text x="528" y="740" class="ff" font-size="12" fill="#7D7AF2" font-weight="600">+ Showing 6 of 12 codes</text>
+  <text x="1322" y="740" class="ff muted" text-anchor="end">‹ 1 2 ›</text>
+</svg>

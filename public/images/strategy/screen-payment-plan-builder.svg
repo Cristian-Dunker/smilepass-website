@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1366 800" role="img" aria-label="SmilePass New Payment Plan modal">
+  <defs>
+    <style>
+      .ff{font-family:'Inter','Helvetica Neue',Arial,sans-serif}
+      .nav-mute{font-size:13px;fill:#7B789C;font-weight:400}
+      .nav-active{font-size:13px;fill:#7D7AF2;font-weight:600}
+      .h1{font-size:22px;fill:#252156;font-weight:600;letter-spacing:-.01em}
+      .lbl{font-size:12px;fill:#5F5C7F;font-weight:500}
+      .field-val{font-size:14px;fill:#252156;font-weight:500}
+      .field-mute{font-size:14px;fill:#7B789C}
+      .muted{font-size:11.5px;fill:#7B789C}
+      .freq-on{font-size:13px;fill:#252156;font-weight:600}
+      .freq-off{font-size:13px;fill:#7B789C}
+      .btn-text{font-size:12px;fill:#FFFFFF;font-weight:600;letter-spacing:.04em}
+      .btn-cancel{font-size:12px;fill:#252156;font-weight:500;letter-spacing:.04em}
+    </style>
+  </defs>
+  <rect width="1366" height="800" fill="#F6F4FB"/>
+
+  <!-- Background page (dimmed) -->
+  <rect x="0" y="0" width="232" height="800" fill="#FFFFFF" opacity=".5"/>
+  <text x="40" y="56" class="ff" font-size="18" fill="#252156" font-weight="700" opacity=".5">SmilePass</text>
+  <text x="40" y="125" class="ff" font-size="13" fill="#7B789C" opacity=".5">⌂ Home</text>
+  <text x="40" y="165" class="ff" font-size="13" fill="#7B789C" opacity=".5">⌽ Membership</text>
+  <text x="40" y="205" class="ff" font-size="13" fill="#7B789C" opacity=".5">$ Payment Plan</text>
+  <text x="40" y="245" class="ff" font-size="13" fill="#7B789C" opacity=".5">◔ Reporting</text>
+  <rect x="0" y="0" width="1366" height="800" fill="rgba(37,33,86,0.3)"/>
+
+  <!-- Modal -->
+  <rect x="220" y="60" width="920" height="700" rx="16" fill="#FFFFFF"/>
+  <text x="252" y="106" class="ff h1">New Payment Plan</text>
+  <text x="1108" y="106" class="ff" font-size="22" fill="#7B789C" text-anchor="end">×</text>
+
+  <!-- Row 1: Name + Locations -->
+  <text x="252" y="148" class="ff lbl">Name</text>
+  <rect x="252" y="158" width="416" height="44" rx="10" fill="#FFFFFF" stroke="#E5E3F0"/>
+  <text x="272" y="186" class="ff field-val">Implant Case · 12 month</text>
+  <text x="700" y="148" class="ff lbl">Locations</text>
+  <rect x="700" y="158" width="408" height="44" rx="10" fill="#FFFFFF" stroke="#E5E3F0"/>
+  <text x="720" y="186" class="ff field-val">All locations</text>
+  <text x="1090" y="186" class="ff" font-size="14" fill="#7B789C" text-anchor="end">▾</text>
+
+  <!-- Row 2: Description -->
+  <text x="252" y="234" class="ff lbl">Description</text>
+  <rect x="252" y="244" width="856" height="120" rx="10" fill="#FFFFFF" stroke="#E5E3F0"/>
+  <text x="272" y="272" class="ff field-val">Single-tooth implant case payment plan. $1,000 deposit at consult,</text>
+  <text x="272" y="290" class="ff field-val">balance of $7,500 over 12 monthly instalments at $625 each.</text>
+  <text x="272" y="308" class="ff field-val">Auto-debit, retries on failed cards, SMS reminders.</text>
+  <text x="1088" y="356" class="ff muted" text-anchor="end">147 / 200</text>
+
+  <!-- Row 3: Only for members toggle -->
+  <text x="252" y="394" class="ff lbl">Only for members:</text>
+  <rect x="392" y="384" width="40" height="20" rx="10" fill="#7D7AF2"/>
+  <circle cx="421" cy="394" r="7" fill="#FFFFFF"/>
+  <text x="442" y="399" class="ff field-val">On — restricts to active members</text>
+
+  <!-- Two-column form -->
+  <!-- LEFT column -->
+  <text x="252" y="448" class="ff" font-size="14" fill="#252156" font-weight="600">Total Payment Amount</text>
+  <text x="252" y="478" class="ff lbl">Minimum</text>
+  <rect x="252" y="488" width="200" height="40" rx="8" fill="#FFFFFF" stroke="#E5E3F0"/>
+  <text x="272" y="514" class="ff field-val">$ 1,500</text>
+  <text x="252" y="552" class="ff lbl">Maximum</text>
+  <rect x="252" y="562" width="200" height="40" rx="8" fill="#FFFFFF" stroke="#E5E3F0"/>
+  <text x="272" y="588" class="ff field-val">$ 50,000</text>
+
+  <text x="252" y="630" class="ff" font-size="14" fill="#252156" font-weight="600">Instalment length (months):</text>
+  <rect x="252" y="640" width="200" height="40" rx="8" fill="#F1F0FD" stroke="#7D7AF2"/>
+  <text x="352" y="666" class="ff" font-size="14" fill="#7D7AF2" font-weight="600" text-anchor="middle">+ 12</text>
+  <rect x="464" y="640" width="68" height="40" rx="8" fill="#FFFFFF" stroke="#E5E3F0"/>
+  <text x="498" y="666" class="ff" font-size="14" fill="#7B789C" text-anchor="middle">24</text>
+
+  <text x="252" y="708" class="ff" font-size="14" fill="#252156" font-weight="600">Start after:</text>
+  <rect x="252" y="718" width="200" height="40" rx="8" fill="#FFFFFF" stroke="#E5E3F0"/>
+  <text x="272" y="744" class="ff field-val">0 days · on signup</text>
+
+  <!-- RIGHT column -->
+  <text x="572" y="448" class="ff" font-size="14" fill="#252156" font-weight="600">Payment Frequency:</text>
+  <!-- Weekly off -->
+  <rect x="572" y="466" width="40" height="20" rx="10" fill="#E5E3F0"/>
+  <circle cx="583" cy="476" r="7" fill="#FFFFFF"/>
+  <text x="622" y="481" class="ff freq-off">Weekly</text>
+  <!-- Fortnightly off -->
+  <rect x="710" y="466" width="40" height="20" rx="10" fill="#E5E3F0"/>
+  <circle cx="721" cy="476" r="7" fill="#FFFFFF"/>
+  <text x="760" y="481" class="ff freq-off">Fortnightly</text>
+  <!-- Monthly on -->
+  <rect x="868" y="466" width="40" height="20" rx="10" fill="#7D7AF2"/>
+  <circle cx="897" cy="476" r="7" fill="#FFFFFF"/>
+  <text x="918" y="481" class="ff freq-on">Monthly</text>
+
+  <text x="572" y="528" class="ff lbl">Amount</text>
+  <rect x="572" y="538" width="200" height="40" rx="8" fill="#F1F0FD" stroke="#7D7AF2"/>
+  <text x="592" y="564" class="ff" font-size="15" fill="#252156" font-weight="600">$ 625.00</text>
+
+  <text x="572" y="602" class="ff lbl">Setup fee</text>
+  <rect x="572" y="612" width="200" height="40" rx="8" fill="#FFFFFF" stroke="#E5E3F0"/>
+  <text x="592" y="638" class="ff field-val">$ 0.00</text>
+
+  <text x="572" y="676" class="ff lbl">Deposit</text>
+  <rect x="572" y="686" width="200" height="40" rx="8" fill="#F1F0FD" stroke="#7D7AF2"/>
+  <text x="592" y="712" class="ff" font-size="15" fill="#252156" font-weight="600">$ 1,000.00</text>
+
+  <text x="820" y="528" class="ff lbl">Admin fee</text>
+  <rect x="820" y="538" width="200" height="40" rx="8" fill="#FFFFFF" stroke="#E5E3F0"/>
+  <text x="840" y="564" class="ff field-val">$ 0.00</text>
+
+  <text x="820" y="602" class="ff lbl">Payment Hold (escrow)</text>
+  <rect x="820" y="612" width="200" height="40" rx="8" fill="#F1F0FD" stroke="#7D7AF2"/>
+  <rect x="840" y="624" width="32" height="18" rx="9" fill="#7D7AF2"/>
+  <circle cx="863" cy="633" r="6" fill="#FFFFFF"/>
+  <text x="884" y="638" class="ff" font-size="13" fill="#7D7AF2" font-weight="600">Enabled</text>
+
+  <text x="820" y="676" class="ff lbl">Refund window</text>
+  <rect x="820" y="686" width="200" height="40" rx="8" fill="#FFFFFF" stroke="#E5E3F0"/>
+  <text x="840" y="712" class="ff field-val">12 weeks</text>
+
+  <!-- Bottom row -->
+  <line x1="220" y1="744" x2="1140" y2="744" stroke="#F4F2FB"/>
+  <!-- Footer is in the modal but using slightly higher: -->
+  <line x1="252" y1="742" x2="1108" y2="742" stroke="#F4F2FB"/>
+</svg>

@@ -14,6 +14,11 @@ const nextConfig: NextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 31536000,
+    // We author our own SVG mocks for the Strategy "Set it up in SmilePass"
+    // sections, so SVG is safe to allow through the optimizer. CSP locks it
+    // down so injected scripts in any SVG cannot execute.
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     remotePatterns: [
       { protocol: "https", hostname: "i.ytimg.com" },
     ],

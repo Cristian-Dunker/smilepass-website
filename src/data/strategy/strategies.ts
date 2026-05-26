@@ -32,9 +32,27 @@ export interface Strategy {
   body: string;
 }
 
+/**
+ * One setup step in the "How to launch this in SmilePass" section.
+ *
+ * Kept short (1-3 sentences) and concrete — every step should reference an
+ * actual SmilePass nav path or toggle so the reader can act immediately.
+ */
+export interface SetupStep {
+  num: string; // "01", "02", ...
+  title: string;
+  body: string;
+}
+
 /* ─────────────────────────────────────────────────────────── */
 
 export const STRATEGY_CATEGORIES: StrategyCategory[] = [
+  {
+    id: "foundations",
+    title: "Foundations",
+    description: "The non-negotiables. Get these right before running any of the plays below — none of them work without the team behind them.",
+    order: 0,
+  },
   {
     id: "memberships",
     title: "Memberships",
@@ -88,6 +106,140 @@ export const STRATEGY_CATEGORIES: StrategyCategory[] = [
 /* ─────────────────────────────────────────────────────────── */
 
 export const STRATEGIES: Strategy[] = [
+  /* ─── Foundations ─── */
+  {
+    slug: "know-the-platform",
+    title: "Learn the platform first",
+    lead: "Spend an hour walking through SmilePass before you launch anything. Knowing where every setting lives makes every later play 10× faster.",
+    categoryId: "foundations",
+    order: 1,
+    body: `
+The single biggest predictor of a smooth membership launch is whether the practice owner has actually used the platform before the launch day. Practices that skip this step end up making config changes mid-launch, training a confused team, and chasing problems they could have anticipated.
+
+This is the smallest investment in the whole playbook: about an hour, before you open the doors. Skipping it costs you weeks downstream.
+
+## Why this is the very first step
+
+Every other strategy in this playbook assumes you can find Membership Builder, configure a payment plan, toggle the Referral Program, and read the dashboard without hunting. If those motions aren't reflexive, the launch wobbles. You'll mistime a config change, miss a setting, or build a plan whose name and pricing don't match what reception is quoting to patients at the chair.
+
+The good news: SmilePass is genuinely simple to learn end-to-end. The whole platform takes under an hour to walk through once. Doing it before launch (not after) is what separates the practices that compound from the ones that re-launch six months later.
+
+## What "knowing the platform" means
+
+You should be able to do all of these in under a minute each, without notes:
+
+- Open Membership Builder and create a new plan
+- Open Payment Plan Builder and create a template
+- Toggle Dependent Program on/off in Custom Discounts & Code
+- Create a Promo Code
+- Find a specific member in the member list
+- Issue a Payment Request via Quick Actions
+- Open the home dashboard and read MRR, member count, new signups
+- Find the Reports area and run a tier-mix breakdown
+
+If any of those make you pause, you haven't done the walkthrough yet. Spend the hour now.
+
+## How to learn it: read the wiki
+
+We wrote the SmilePass [wiki](/wiki) as a guided tour, organised into four short tracks that mirror the order you'll actually use the platform:
+
+1. **[Getting started](/wiki/onboarding-wizard)** — the onboarding wizard, the home dashboard, the Quick Actions toolbar, practice locations. About 15 minutes.
+2. **[Building plans](/wiki/membership-plans)** — Membership Builder, plan templates, add-ons, payment plan builder, custom discounts. About 20 minutes.
+3. **[Daily operations](/wiki/registering-patients)** — registering patients, importing patient lists, adding members, taking payments, reading reports. About 15 minutes.
+4. **[Account & integrations](/wiki/account-and-team)** — team accounts, marketing shop, integrations, billing. About 10 minutes.
+
+Total: roughly an hour. Read straight through, in order, ideally with the live SmilePass tab open next to it so you can click as you read.
+
+## When this strategy fits
+
+- Every practice, before launching memberships or payment plans for the first time
+- Practices about to bring on a new staff member who'll be using SmilePass daily
+- Practice owners who delegated the original setup and haven't logged in themselves in 6+ months
+
+## When it doesn't
+
+- There is no "when it doesn't". If you're going to run a SmilePass program, you (or whoever owns the program) needs to know the platform inside-out before anything else happens.
+    `.trim(),
+  },
+  {
+    slug: "team-training",
+    title: "Train your team second",
+    lead: "Now that you know the platform, get your team to the same level. Memberships and payment plans don't fail because the software breaks — they fail because reception forgets to mention them.",
+    categoryId: "foundations",
+    order: 2,
+    body: `
+Once you know the platform yourself, the next foundation is making sure the rest of the team is on the same page. The single biggest predictor of whether a practice's membership program succeeds is not the pricing, not the inclusions, not even the marketing. It's whether the front desk and the hygienists actually mention it to patients. Every practice that has launched memberships and then watched them stall has the same root cause: the team wasn't on board, didn't know the script, and quietly let the program die from neglect.
+
+This is foundation step two, and it comes right after [learning the platform yourself](/strategy/know-the-platform). If you only have time to do two things this month, do these.
+
+## Why team training is the foundation
+
+A patient walks out of your practice having had a clean and a check-up. The receptionist processes the payment, says "see you in six months", and the patient leaves. The membership plan never gets mentioned. Multiply that by every appointment, every day, for a year, and you have a membership program that never gets off the ground despite being available the entire time.
+
+This is the default outcome unless the team is actively trained and held accountable. The platform makes membership effortless to *operate*. But platforms don't talk to patients. Your team does.
+
+## What "trained" actually means
+
+Trained doesn't mean "the team knows the membership exists". It means:
+
+- **Reception knows the script for the post-appointment conversation** and uses it on every patient over a certain treatment threshold
+- **Hygienists know the chairside moment** to mention specific add-ons (Whitening Boost during polish, Night Guard during occlusion check)
+- **Everyone can answer the top five patient questions** without flinching ("What if I move?", "Can I cancel?", "Is this insurance?")
+- **The practice manager checks the membership dashboard every morning** and flags slow weeks before they become slow months
+- **The dentist owns the high-value pitch** for ortho, implant cases and full-mouth rehabs, and books the second consult themselves
+
+If any of those are missing, the program leaks revenue silently.
+
+## The three conversations that matter most
+
+**1. The post-hygiene checkout.** Reception or hygienist says: "Next time, your visit is already paid for. Want me to set that up?" Most practices that nail this one conversation see hygiene-attached membership conversion at 25 to 35% within six months.
+
+**2. The treatment-plan presentation.** When the dentist hands over a $2,000+ treatment plan, the team has the payment-plan offer ready. The line that works: "You don't need to find that today. About $X a month covers it." This single conversation lifts case acceptance by 30 to 60%.
+
+**3. The post-emergency follow-up.** A week after an emergency visit, the team reaches out: "Glad we got that sorted. Just so you know, we have an Emergency Safety-Net plan that would have covered tonight's call-out." Recovery rate is unusually high because the patient just experienced the pain point.
+
+If your team can do those three conversations confidently, your membership and payment-plan programs work. If they can't, no amount of platform configuration will save you.
+
+## Common failure modes
+
+- **"Reception forgot."** Translation: nobody ever made it part of the routine, and nobody is reviewing whether it's happening.
+- **"The hygienist assumes the dentist will mention it."** Nobody owns the conversation, so it doesn't happen.
+- **"The dentist thinks it's a reception job."** Wrong. High-value plans (ortho, implants) need the dentist's authority behind the pitch.
+- **"We tried it for a month and nothing happened."** Memberships are a 6 to 12-month compound. Quitting after a month is the modal failure.
+- **"We trained them once at launch."** Hygienists turn over. Receptionists go on leave. Without a quarterly refresh and a new-hire onboarding script, the program decays.
+
+## The training curriculum that works
+
+Most practices that get this right run training in four blocks, spread over the first two weeks of program launch (and refreshed quarterly):
+
+1. **Week 1, Day 1: the why.** A 30-minute team meeting explaining what changes for patients, what changes for the practice's revenue, and what the team's role is.
+2. **Week 1, Day 3: the platform tour.** Walk the whole team through SmilePass together. They see where members are listed, how an enrolment happens, and where the dashboard lives.
+3. **Week 1, Day 5: role-play.** Each team member practises the three core conversations on each other. Stop when it feels natural, not when it feels memorised.
+4. **Week 2 onwards: the daily standup.** Every morning, the practice manager opens the dashboard, calls out yesterday's signups by name, and asks "what's blocking us today?". This is the single most important habit. Without it, the program drifts.
+
+## What to measure
+
+Track these three numbers weekly during the first 90 days:
+
+- **New signups per week.** Target: 5 to 15 in the first month, ramping to 20+ by month three.
+- **Hygiene-to-membership conversion rate.** Target: 25 to 35% of hygiene patients on the plan within six months.
+- **Active plans vs cancelled plans this week.** Target: 5:1 or better. If cancellations climb, the conversation at sign-up was over-promising.
+
+If any of these slip, it's almost always a training issue, not a platform issue. The fix is another role-play session, not a new feature.
+
+## When this strategy fits
+
+- Every practice launching memberships or in-house payment plans for the first time
+- Established programs that have plateaued (training has decayed)
+- Practices that have just hired new reception staff or a new hygienist
+- Practices where the dentist wants to delegate the conversation but reception keeps forgetting
+
+## When it doesn't
+
+- There is no "when it doesn't". Every practice running memberships or payment plans needs this strategy in place first.
+    `.trim(),
+  },
+
   /* ─── Memberships ─── */
   {
     slug: "family-first-growth",
@@ -1324,4 +1476,851 @@ export function getStrategiesInCategory(categoryId: string): Strategy[] {
   return STRATEGIES.filter((s) => s.categoryId === categoryId).sort(
     (a, b) => a.order - b.order,
   );
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/*  Setup steps — "How to launch this in SmilePass" per strategy.
+ *
+ *  Sidecar map keyed by slug. Stored separately from the strategy bodies
+ *  so the marketing prose stays readable and the implementation guide
+ *  can be edited independently. Rendered after the body on /strategy/[slug].
+ */
+/* ─────────────────────────────────────────────────────────── */
+
+export const STRATEGY_SETUPS: Record<string, SetupStep[]> = {
+  /* ─── Foundations ─── */
+
+  "know-the-platform": [
+    {
+      num: "01",
+      title: "Read the Getting Started wiki track",
+      body:
+        "Open the [Getting Started track](/wiki/onboarding-wizard) of the SmilePass wiki and read it end-to-end with the live SmilePass tab open next to it. Onboarding wizard, the home dashboard, Quick Actions, practice locations. About 15 minutes.",
+    },
+    {
+      num: "02",
+      title: "Walk through Building Plans",
+      body:
+        "Read the [Building Plans track](/wiki/membership-plans) covering Membership Builder, plan templates, add-ons, the payment plan builder, and custom discounts. Click through each section in your own account as you read. About 20 minutes.",
+    },
+    {
+      num: "03",
+      title: "Run through Daily Operations",
+      body:
+        "Read the [Daily Operations track](/wiki/registering-patients) on registering patients, importing patient lists, adding members, taking payments, and reading reports. These are the motions your team will do every day. About 15 minutes.",
+    },
+    {
+      num: "04",
+      title: "Finish with Account & Integrations",
+      body:
+        "Read the [Account & Integrations track](/wiki/account-and-team) on team accounts, the marketing shop, integrations, and billing. Lighter material but covers the housekeeping. About 10 minutes.",
+    },
+    {
+      num: "05",
+      title: "Pin the wiki to a browser tab",
+      body:
+        "Bookmark the [SmilePass wiki](/wiki) and pin it in your browser. From now on, when you (or anyone on the team) needs a refresher, it's one click away. The wiki updates as the platform updates, so it stays current automatically.",
+    },
+  ],
+
+  "team-training": [
+    {
+      num: "01",
+      title: "Run the kickoff meeting",
+      body:
+        "Block 30 minutes with the whole team before launch. Explain the 'why': what changes for patients, what changes for your revenue, what each role owns. Without buy-in at this meeting, nothing downstream sticks.",
+    },
+    {
+      num: "02",
+      title: "Tour SmilePass together",
+      body:
+        "Walk reception and the hygienists through Membership Builder, the member list, the Quick Actions toolbar (Add Member, Request Payment) and the home dashboard. They need to see the platform once with their own eyes so it isn't intimidating.",
+    },
+    {
+      num: "03",
+      title: "Build the one-page reception cheat sheet",
+      body:
+        "Print a single page taped to the side of every reception monitor: each plan's name and price, the top three patient objections with the one-liner response, and which patient type to offer which plan to. Short enough to scan in 10 seconds.",
+    },
+    {
+      num: "04",
+      title: "Role-play the three core conversations",
+      body:
+        "Pair up the team and practise the post-hygiene checkout, the treatment-plan presentation and the post-emergency follow-up. Each pair runs each script three times. Stop when it sounds natural, not when it sounds memorised.",
+    },
+    {
+      num: "05",
+      title: "Set the daily dashboard standup",
+      body:
+        "Every morning, the practice manager opens the home dashboard, calls out yesterday's new signups by name, and asks 'what's blocking us today?'. Five minutes. The single most important habit for keeping the program alive.",
+    },
+  ],
+
+  /* ─── Memberships ─── */
+
+  "family-first-growth": [
+    {
+      num: "01",
+      title: "Turn on the Dependent Program",
+      body:
+        "Open Settings → Custom Discounts & Code → Manage Discounts. Toggle Dependent Program on and set the per-dependent discount at 10%. Save.",
+    },
+    {
+      num: "02",
+      title: "Build a family-friendly plan",
+      body:
+        "In Membership Builder, create a new plan called 'Family Care'. Set No age limits, include adult-and-child preventive services, and price the adult tier at $30 to $40 per month.",
+    },
+    {
+      num: "03",
+      title: "Switch on the live price preview",
+      body:
+        "In the plan settings, enable the live dependent-pricing card on the patient-facing signup page so families see the discount stack as they add kids.",
+    },
+    {
+      num: "04",
+      title: "Train reception on the household pitch",
+      body:
+        "Script the offer to lead with the family plan whenever any new adult enrols. The line that works: 'Add your partner and kids for less than the price of two singles.'",
+    },
+    {
+      num: "05",
+      title: "Announce and track",
+      body:
+        "Send a launch email to your existing patient list from your own CRM or email tool, headlining the family discount and the dependent stacking math. Then watch Reports → Membership for family-plan signups vs single-adult signups in the first 30 days.",
+    },
+  ],
+
+  "recurring-revenue-foundation": [
+    {
+      num: "01",
+      title: "Build your first plan",
+      body:
+        "In Membership Builder, start from the 'Comprehensive Adult' template. Tune inclusions to match your average preventive visit value and price between $25 and $45 per month.",
+    },
+    {
+      num: "02",
+      title: "Pick the billing cadence",
+      body:
+        "Set billing to monthly to start. Enable auto-renewal so the membership runs indefinitely until the patient cancels. Most practices run on monthly debit by default.",
+    },
+    {
+      num: "03",
+      title: "Import your existing patient list",
+      body:
+        "Upload your patient CSV via Members → Import. From now on every new patient at reception is one click away from a SmilePass invitation.",
+    },
+    {
+      num: "04",
+      title: "Send the first wave of invites",
+      body:
+        "From Members → Bulk Actions, select your top 50 most-loyal patients and send the enrolment invitation. Expect 20 to 40% to convert in the first week.",
+    },
+    {
+      num: "05",
+      title: "Watch the MRR climb on the dashboard",
+      body:
+        "Home dashboard shows MRR, member count and new signups by day. Make checking it the first thing your practice manager does each morning.",
+    },
+  ],
+
+  "good-better-best-ladder": [
+    {
+      num: "01",
+      title: "Design the three tiers",
+      body:
+        "Build Essentials, Comprehensive and Premium in Membership Builder. Price them roughly $25, $35 and $50 per month. The middle plan is the one most patients will pick.",
+    },
+    {
+      num: "02",
+      title: "Make the middle plan obviously the best deal",
+      body:
+        "Essentials should feel a bit thin (2 cleans only). Comprehensive should add the things patients actually want (cleans + exams + x-rays + 15% off other treatments). Premium adds whitening or top-ups.",
+    },
+    {
+      num: "03",
+      title: "Order them left to right on your webpage",
+      body:
+        "Marketing → Your Webpage. Set the order Essentials → Comprehensive → Premium. Add a 'Most popular' badge to Comprehensive in the plan settings.",
+    },
+    {
+      num: "04",
+      title: "Train reception to anchor on Premium",
+      body:
+        "The pitch: 'Most patients land on Comprehensive for $35 a month, but you can step up to Premium if you also want your whitening covered.' Anchoring on the top makes the middle feel like the smart choice.",
+    },
+    {
+      num: "05",
+      title: "Review tier mix monthly",
+      body:
+        "Reports → Membership shows mix percentage per plan. Target 60 to 70% on Comprehensive. If too many are on Essentials, the gap is too small. If too few are on Premium, the top is too steep.",
+    },
+  ],
+
+  "hygiene-only-starter": [
+    {
+      num: "01",
+      title: "Build the Hygiene Only plan",
+      body:
+        "In Membership Builder, create a plan with two hygiene visits per year included and nothing else. Name it clearly ('Hygiene Essentials') and price it low enough that hygiene-only seekers self-filter to it from your public page. Reception offers it directly at the chair to everyone else.",
+    },
+    {
+      num: "02",
+      title: "Price it as roughly 'two cleans, paid over 12 months'",
+      body:
+        "If a hygiene visit costs $180 at your practice, the plan price lands around $30 per month (two visits ÷ 12 with a small discount). Tune to your fee schedule.",
+    },
+    {
+      num: "03",
+      title: "Make it the post-hygiene-checkout default offer",
+      body:
+        "Train hygienists to mention it at the end of every visit. Script: 'Next time, your visit will already be paid for. Want me to set that up?'",
+    },
+    {
+      num: "04",
+      title: "Track conversion in Reports",
+      body:
+        "Reports → Membership filtered by Hygiene Only plan. The goal: 25 to 35% of hygiene patients on the plan within six months.",
+    },
+  ],
+
+  "demographic-segmented-tiers": [
+    {
+      num: "01",
+      title: "Pick three or four target demographics",
+      body:
+        "Common splits: Young Adults, Families, Seniors, Implant Patients. Each gets a plan that maps to what they actually need.",
+    },
+    {
+      num: "02",
+      title: "Build one plan per segment",
+      body:
+        "Membership Builder, one plan each. Tune inclusions to the demographic: Seniors get more denture/relining cover, Young Adults get whitening, Families get the dependent discount.",
+    },
+    {
+      num: "03",
+      title: "Name and price niche plans to self-filter",
+      body:
+        "Every plan you build appears on your public signup page, so use the plan name (e.g. 'Implant Maintenance Care'), the price point and the inclusions to make sure only the right patient type would consider it. Brief reception to actively steer the matching patient to each one.",
+    },
+    {
+      num: "04",
+      title: "Train staff on which plan to offer when",
+      body:
+        "Build a one-page cheat sheet for the front desk: patient type → recommended plan. Tape it to the side of the reception monitor.",
+    },
+    {
+      num: "05",
+      title: "Consolidate weak performers",
+      body:
+        "After six months, kill any plan with fewer than 10 members and roll those patients into the next-closest plan. Too many plans is harder to operate than too few.",
+    },
+  ],
+
+  "fortnightly-billing": [
+    {
+      num: "01",
+      title: "In Membership Builder, set frequency to Fortnightly",
+      body:
+        "Edit your existing flagship plan. Change Billing Frequency from Monthly to Fortnightly. Save as a new variant so the original monthly plan stays intact.",
+    },
+    {
+      num: "02",
+      title: "Price as monthly ÷ 2.17",
+      body:
+        "A $35 monthly plan becomes a $16 fortnightly plan. Round to the nearest dollar. Total annual cost stays the same; the perceived size of each debit roughly halves.",
+    },
+    {
+      num: "03",
+      title: "Align debit day to payday",
+      body:
+        "Set debit day to Thursday or Friday so payment lands when patients are likeliest to have money in the account. This single change drops failed-payment rate noticeably.",
+    },
+    {
+      num: "04",
+      title: "Migrate existing monthly members",
+      body:
+        "From your own CRM or email tool, send your existing monthly members a one-off offer to switch to fortnightly billing at no extra cost. Most will say yes; many will also tell a friend it's now cheaper-sounding than they thought.",
+    },
+    {
+      num: "05",
+      title: "Watch retention by cohort",
+      body:
+        "Reports → Cohorts, compare 6-month retention of fortnightly vs monthly cohorts. Expect a 10 to 20% improvement on fortnightly.",
+    },
+  ],
+
+  "founder-launch-pricing": [
+    {
+      num: "01",
+      title: "Create the promo code",
+      body:
+        "Settings → Custom Discounts & Code → Promo Code List → New. Code: FOUNDER50. Type: Percentage. Value: 50%. Duration: Lifetime of membership.",
+    },
+    {
+      num: "02",
+      title: "Cap the campaign tightly",
+      body:
+        "Set redemption limit to 50 redemptions or set an expiry date 30 days from launch. Whichever comes first. The scarcity is the engine.",
+    },
+    {
+      num: "03",
+      title: "Announce it to your patient list",
+      body:
+        "From your own CRM or email tool, send a launch email to your entire patient list. Suggested subject line: 'We're launching memberships, and the first 50 get founder pricing for life.' Include the FOUNDER50 code visibly in the body and the call to action.",
+    },
+    {
+      num: "04",
+      title: "Put signage at reception",
+      body:
+        "Marketing → Marketing Shop. Download the founder-launch flyer template, tune the copy, and print for the front desk. Make sure every patient sees it on the way in.",
+    },
+    {
+      num: "05",
+      title: "Close the campaign cleanly",
+      body:
+        "When you hit the cap, deactivate the code in the dashboard and email the list: '50 founders signed up. We're now back to standard pricing.' That email creates a second wave.",
+    },
+  ],
+
+  "referral-engine": [
+    {
+      num: "01",
+      title: "Toggle on the Referral Program",
+      body:
+        "Settings → Custom Discounts & Code → Manage Discounts → Referral Program. Toggle on. Set discount to 10% for the referrer, 10% for the referred friend.",
+    },
+    {
+      num: "02",
+      title: "Confirm the 12-month duration cap",
+      body:
+        "The default is that members earn the discount per active referral for 12 months, capped at 100% off. Leave the defaults unless you have a specific reason to change them.",
+    },
+    {
+      num: "03",
+      title: "Tell members the program exists",
+      body:
+        "Use your own CRM or email tool to send a one-off announcement to all active members, explaining how the referral mechanic works. Without this email, members never realise they can save by referring.",
+    },
+    {
+      num: "04",
+      title: "Make referral the post-appointment ask",
+      body:
+        "Train staff to say at checkout: 'Know anyone who'd benefit from the membership? We'll discount your next month for every friend who joins.'",
+    },
+    {
+      num: "05",
+      title: "Track in the referral dashboard",
+      body:
+        "Reports → Referrals shows who referred whom, conversion rate, and current outstanding referral discount. Target: 30% of new signups attributed to referrals within 12 months.",
+    },
+  ],
+
+  "corporate-workplace-memberships": [
+    {
+      num: "01",
+      title: "Build a 'Corporate' plan",
+      body:
+        "In Membership Builder, copy your standard adult plan and discount 10 to 15% to reflect the bulk relationship. Name it explicitly (e.g. 'Workplace Wellness Plan') so it reads as a corporate offering on the public page. Pair it with a company-specific Promo Code so the corporate discount only applies for verified employees who enter the code.",
+    },
+    {
+      num: "02",
+      title: "Create the company-specific promo code",
+      body:
+        "Settings → Promo Code List → New. Code: ACMECORP (or the company name). Set redemption cap, expiry, and discount. Each company gets its own code.",
+    },
+    {
+      num: "03",
+      title: "Pitch HR managers directly",
+      body:
+        "Reach out to HR at 3 to 5 nearby companies (offices, manufacturing, retail). The offer: a free workplace dental health perk for employees, zero cost to the employer.",
+    },
+    {
+      num: "04",
+      title: "Enable family extension",
+      body:
+        "Keep Dependent Program on so employees can add spouse and kids at the discounted family rate. The HR pitch is stronger when it covers the household.",
+    },
+    {
+      num: "05",
+      title: "Run a quarterly review",
+      body:
+        "Send each HR contact a summary every quarter: employees enrolled, visits delivered, total value. This is what keeps the relationship alive year after year.",
+    },
+  ],
+
+  "add-on-revenue-layer": [
+    {
+      num: "01",
+      title: "Build your first three add-ons",
+      body:
+        "Memberships → Add-Ons → New. Start with Whitening Boost, Custom Night Guard, and Annual X-Ray Pack. Price each between $8 and $20 per month on top of the base membership.",
+    },
+    {
+      num: "02",
+      title: "Surface add-ons at enrolment",
+      body:
+        "In plan settings, enable 'Show add-ons on signup page'. Patients see them as optional upgrades while joining. Acceptance rate is highest at this moment.",
+    },
+    {
+      num: "03",
+      title: "Brief hygienists on the chairside pitch",
+      body:
+        "Train hygienists to mention the Whitening Boost during the polish phase, and the Night Guard during occlusion check. Natural, in-context, not sales-y.",
+    },
+    {
+      num: "04",
+      title: "Review add-on attach rate monthly",
+      body:
+        "Reports → Add-Ons. Target attach rate: 20 to 30% of new members take at least one add-on within their first 90 days.",
+    },
+    {
+      num: "05",
+      title: "Retire add-ons that flop",
+      body:
+        "If an add-on is under 5% attach after three months, kill it. Replace with something patients actually ask about (e.g. an Invisalign Refresh, a desensitiser top-up).",
+    },
+  ],
+
+  /* ─── Payment plans ─── */
+
+  "treatment-day-deposits": [
+    {
+      num: "01",
+      title: "Enable Payment Hold",
+      body:
+        "Available on Growth plan and above. Payment Plans → Settings → Enable Payment Hold. This is the escrow feature that holds the deposit until treatment day.",
+    },
+    {
+      num: "02",
+      title: "Build the high-value plan template",
+      body:
+        "Payment Plans → New Plan Template. Name it 'Implant Case' or 'Full Mouth Rehab'. Set deposit at 20 to 30% with Payment Hold on. Configure auto-convert to first instalment on treatment day.",
+    },
+    {
+      num: "03",
+      title: "Set the refund rule",
+      body:
+        "Configure refund-if-no-treatment-by-date. Most practices set 12 weeks. This protects the patient and reduces the perceived risk of paying upfront.",
+    },
+    {
+      num: "04",
+      title: "Issue at the case-presentation appointment",
+      body:
+        "Reception sends the signed plan to the patient's phone before they leave. The deposit clears within minutes. The treatment is now anchored in the patient's mind.",
+    },
+    {
+      num: "05",
+      title: "Measure no-show drop",
+      body:
+        "Reports → Appointments → No-Show Rate, filtered to cases with Payment Hold vs without. Expect to see no-show on $5k+ cases drop from 8 to 12% to under 1%.",
+    },
+  ],
+
+  "accessible-major-treatments": [
+    {
+      num: "01",
+      title: "Pick the three treatments you most want to unlock",
+      body:
+        "Common picks: crowns ($1,500 to $2,500), root canals + crown bundles ($2,000 to $3,500), partial dentures ($1,500 to $3,000). These are where the price barrier loses you cases.",
+    },
+    {
+      num: "02",
+      title: "Build a plan template per treatment",
+      body:
+        "Payment Plans → New Template. Crown Plan: 6-month interest-free, optional 20% deposit. Save as a one-click issue from the patient record.",
+    },
+    {
+      num: "03",
+      title: "Train the team on objection handling",
+      body:
+        "The pitch: 'You don't need to find $2,000 today. About $330 a month covers it, and we can start treatment as soon as the first payment clears.' Script it, then drill it.",
+    },
+    {
+      num: "04",
+      title: "Add the plan to the treatment-plan handout",
+      body:
+        "Update your treatment-plan PDF template to include a line: 'Payment plan available: $X per month over Y months.' Make it visible at presentation time, not when they ask.",
+    },
+    {
+      num: "05",
+      title: "Track case-acceptance lift",
+      body:
+        "Reports → Treatment Acceptance, segmented by treatment type. Target: 30 to 60% lift on $1,500 to $3,000 treatments within six months.",
+    },
+  ],
+
+  /* ─── Ortho ─── */
+
+  "ortho-financing-playbook": [
+    {
+      num: "01",
+      title: "Build the Ortho 24-Month Plan template",
+      body:
+        "Payment Plans → New Template. 24 fortnightly debits, $0 setup fee, $0 interest. Optional small commitment fee at consultation (Payment Hold).",
+    },
+    {
+      num: "02",
+      title: "Lock in the commitment fee with Payment Hold",
+      body:
+        "Set a $500 to $1,000 commitment fee that sits in escrow until the start-of-treatment appointment, then converts to the first instalment. This eliminates the 'I'll think about it' drift.",
+    },
+    {
+      num: "03",
+      title: "Issue at the consult, not the start appointment",
+      body:
+        "The signed plan must leave with the patient at the end of the consult. Reception sends it to their phone, they sign before they reach the car park.",
+    },
+    {
+      num: "04",
+      title: "Pair with a retention follow-up",
+      body:
+        "In your CRM, set up an automated 48-hour follow-up to consult patients who haven't signed. A simple 'Just checking in, happy to answer any questions about the plan' nudge typically recovers 15 to 25% of stalled consults.",
+    },
+    {
+      num: "05",
+      title: "Measure consult-to-start conversion",
+      body:
+        "Reports → Conversion, filtered to ortho. Target: lift from baseline 30 to 45% up to 55 to 65% within six months of running the playbook.",
+    },
+  ],
+
+  "post-ortho-retention": [
+    {
+      num: "01",
+      title: "Build a 'Retainer Care' membership",
+      body:
+        "Membership Builder, $35 to $45 per month. Inclusions: 2 cleans per year, retainer check at each visit, annual whitening top-up. This is what keeps ex-ortho patients in the practice.",
+    },
+    {
+      num: "02",
+      title: "Add the retainer-replacement add-on",
+      body:
+        "Add-Ons → New. Retainer Replacement, $15 per month extra, covers one set per year. Solves the 'I lost it' anxiety that keeps patients up at night.",
+    },
+    {
+      num: "03",
+      title: "Issue at de-bond, not at start of treatment",
+      body:
+        "The script lands when the patient sees their new smile in the mirror. 'To protect everything we just did, here's the maintenance plan.' Sign on the spot.",
+    },
+    {
+      num: "04",
+      title: "Position it as a chairside-only offer",
+      body:
+        "The plan will appear on your public signup page alongside the others, but treat it as something reception only proactively mentions at the de-bond appointment. The name 'Retainer Care' and the price point make it obvious to general patients that it isn't for them. Brief reception not to pitch it outside the ortho cohort.",
+    },
+    {
+      num: "05",
+      title: "Track 12-month retention",
+      body:
+        "Reports → Membership, cohort filtered to ex-ortho. Target: 70%+ of ex-ortho patients on Retainer Care at the 12-month mark.",
+    },
+  ],
+
+  /* ─── Perio ─── */
+
+  "perio-maintenance-membership": [
+    {
+      num: "01",
+      title: "Build a 'Perio Active Maintenance' plan",
+      body:
+        "Membership Builder, $50 to $80 per month. Inclusions: 4 maintenance visits per year, perio chart annually, 10% discount on any further perio surgery.",
+    },
+    {
+      num: "02",
+      title: "Position it as a post-diagnosis offer",
+      body:
+        "The plan will appear on your public signup page, but treat it as an offer reception and hygienists only present after a documented periodontitis diagnosis. The name 'Perio Active Maintenance' and the higher price point both signal to general patients that it isn't for them, so accidental signups stay rare.",
+    },
+    {
+      num: "03",
+      title: "Add it to the perio referral pathway",
+      body:
+        "Whenever a hygienist diagnoses or the dentist refers for perio, the plan is part of the treatment proposal. Build it into the perio chart workflow.",
+    },
+    {
+      num: "04",
+      title: "Pair with insurance-gap framing",
+      body:
+        "Many private health funds cap perio maintenance at 2 visits a year. The plan covers the gap. That's the line that converts.",
+    },
+    {
+      num: "05",
+      title: "Review cohort outcomes",
+      body:
+        "Reports → Perio Cohort. Track average pocket depth, bleeding sites, and 12-month retention. The clinical data justifies the plan and helps you sell it to the next patient.",
+    },
+  ],
+
+  "insurance-gap-perio": [
+    {
+      num: "01",
+      title: "Build a 'Perio Gap' add-on, not a full plan",
+      body:
+        "Memberships → Add-Ons → New. Covers the third and fourth maintenance visit per year that most private health funds cap. $12 to $20 per month.",
+    },
+    {
+      num: "02",
+      title: "Attach to your existing adult membership",
+      body:
+        "Make it available as an add-on to your existing Comprehensive plan. Don't build a separate plan; this is a top-up, not a replacement.",
+    },
+    {
+      num: "03",
+      title: "Brief hygienists on the end-of-year insurance check",
+      body:
+        "October to November, hygienists ask: 'Have you used your private health dental cover for the year?' If yes, offer the gap add-on for next year.",
+    },
+    {
+      num: "04",
+      title: "Run an annual reminder",
+      body:
+        "Each October, send your perio patients a reminder email from your own CRM: 'Your private health resets in January. Want to add the gap cover now?' Schedule it as a recurring annual campaign so it sends itself every year.",
+    },
+  ],
+
+  /* ─── Cosmetic ─── */
+
+  "smile-makeover-combo": [
+    {
+      num: "01",
+      title: "Build the Cosmetic Bundle plan template",
+      body:
+        "Payment Plans → New Template. Pre-set inclusions: Veneers + Whitening + Bonding + Hygiene. 12-month interest-free instalments.",
+    },
+    {
+      num: "02",
+      title: "Set a deposit with Payment Hold",
+      body:
+        "20% deposit sits in escrow until the first treatment appointment. Reduces cancellations on long-lead cosmetic cases dramatically.",
+    },
+    {
+      num: "03",
+      title: "Issue at the smile-design presentation",
+      body:
+        "When the patient sees the mock-up of their new smile, the plan is the next thing on the screen. Sign while the excitement is fresh.",
+    },
+    {
+      num: "04",
+      title: "Add the lifetime maintenance plan",
+      body:
+        "After treatment, transition the patient onto a 'Cosmetic Maintenance' membership ($45 to $60 per month). 2 cleans + annual whitening top-up + veneer check.",
+    },
+    {
+      num: "05",
+      title: "Track cosmetic ROI per case",
+      body:
+        "Reports → Treatment Plans, filtered to Cosmetic Bundle. Average plan value, conversion rate from consult, and downstream membership attach rate.",
+    },
+  ],
+
+  "pre-event-whitening": [
+    {
+      num: "01",
+      title: "Create a time-bound promo code",
+      body:
+        "Settings → Promo Code List → New. Code: WEDDING2026. Discount: $0 setup fee on the Whitening + Polish bundle when booked 90 days before the event date.",
+    },
+    {
+      num: "02",
+      title: "Build the Whitening + Polish bundle as a payment plan",
+      body:
+        "Payment Plans → New Template. 3-month interest-free, total around $400 to $600. Configure as a Whitening Pack including in-chair, take-home trays, and a touch-up appointment.",
+    },
+    {
+      num: "03",
+      title: "Promote via Instagram and your patient list",
+      body:
+        "Post on Instagram and email your patient list 4 to 6 months before wedding and graduation season. A before/after carousel works best. Send the email from your own CRM and include the WEDDING2026 code visibly in the call to action.",
+    },
+    {
+      num: "04",
+      title: "Train reception on the discovery question",
+      body:
+        "When booking any whitening enquiry: 'Is there a date you're working toward?' If yes, slot them into the plan and lock in the discount.",
+    },
+    {
+      num: "05",
+      title: "Convert to membership at follow-up",
+      body:
+        "At the post-event polish, offer the Cosmetic Maintenance membership. Patients who loved their result roll into the plan around 40 to 50% of the time.",
+    },
+  ],
+
+  /* ─── All-on-X ─── */
+
+  "all-on-x-financing": [
+    {
+      num: "01",
+      title: "Build the All-on-X plan template",
+      body:
+        "Payment Plans → New Template. 25% deposit (Payment Hold, refundable until surgery date). Balance over 12 to 24 monthly instalments, $0 interest.",
+    },
+    {
+      num: "02",
+      title: "Configure the refund rule clearly",
+      body:
+        "If the patient cancels before surgery, the deposit refunds in full. State this in the agreement copy patients sign. It removes the biggest psychological barrier to a 5-figure commitment.",
+    },
+    {
+      num: "03",
+      title: "Issue at the records appointment, not the consult",
+      body:
+        "The plan signature comes at the records visit, after the CBCT and prosthetic mock-up. Patients are most committed at this point; the case is real to them.",
+    },
+    {
+      num: "04",
+      title: "Pair with a 24-month follow-up cadence",
+      body:
+        "Set up a 24-month post-op care email cadence in your CRM. Triggered emails at 1 week, 1 month, 3 months, 6 months and 12 months keep the patient engaged and create natural review-request moments along the way.",
+    },
+    {
+      num: "05",
+      title: "Measure consult-to-surgery conversion",
+      body:
+        "Reports → Conversion, filtered to All-on-X. Industry baseline: 15 to 25%. Practices running this playbook regularly hit 35 to 45%.",
+    },
+  ],
+
+  "implant-maintenance-membership": [
+    {
+      num: "01",
+      title: "Build an 'Implant Maintenance' membership",
+      body:
+        "Membership Builder, $65 to $90 per month. Inclusions: 2 specialised hygiene visits per year (40-minute appointments), annual peri-implantitis screening, x-ray check, 10% off prosthetic repairs.",
+    },
+    {
+      num: "02",
+      title: "Issue at the surgery-completion appointment",
+      body:
+        "The final-fit appointment is the moment. Patients have just received a $30k+ result and want to protect it. Sign the maintenance plan on the spot.",
+    },
+    {
+      num: "03",
+      title: "Bundle with a warranty registration",
+      body:
+        "Pair the plan signature with formal registration of the implant warranty. The maintenance plan is the patient's side of the warranty contract.",
+    },
+    {
+      num: "04",
+      title: "Position it as a post-surgery offer",
+      body:
+        "The plan will appear on your public signup page alongside the others, but it's only ever pitched at the surgery-completion appointment. The 'Implant Maintenance' name and the $65 to $90 price point signal clearly that it's for implant patients only. Brief reception never to proactively offer it outside that cohort.",
+    },
+    {
+      num: "05",
+      title: "Track 10-year retention",
+      body:
+        "Set up a long-cohort report. The goal is to keep implant patients on the plan for the lifetime of the implant. Each retained patient is $700 to $1,000 per year of recurring revenue.",
+    },
+  ],
+
+  /* ─── Kids ─── */
+
+  "kids-only-membership": [
+    {
+      num: "01",
+      title: "Build a 'Kids Plan' in Membership Builder",
+      body:
+        "Set age cap at 16. Inclusions: 2 cleans, 2 exams, 2 fluoride, free emergency visit. Price 30 to 40% below the adult equivalent ($15 to $25 per month).",
+    },
+    {
+      num: "02",
+      title: "Enable family-of-kids logic",
+      body:
+        "When a parent signs up two or more kids, the second and third child get an additional 10% off. Configure this on the plan, not via Dependent Program.",
+    },
+    {
+      num: "03",
+      title: "Promote at school-holiday campaigns",
+      body:
+        "A fortnight before each school break, send a kids-plan email to your family-list segment from your own CRM. Position the plan as the way to fit dental visits around school terms. Pair the email with social posts using the Family Plan brochure from the Promotional Material library.",
+    },
+    {
+      num: "04",
+      title: "Pair with adult membership at signup",
+      body:
+        "When a parent enrols, the signup form prompts: 'Add your kids?' Family conversion compounds; a 4-person household at adult+kids rates is $80 to $100 per month of recurring revenue.",
+    },
+    {
+      num: "05",
+      title: "Track kid-to-adult conversion at 16+",
+      body:
+        "When a kid ages out of the plan, your CRM can auto-trigger a transition email offering the adult Comprehensive plan. Use Reports → Cohorts → Kids Aging Out to identify the segment to target. Aim for 50%+ conversion.",
+    },
+  ],
+
+  "family-bundles-back-to-school": [
+    {
+      num: "01",
+      title: "Create the BACKTOSCHOOL promo code",
+      body:
+        "Settings → Promo Code List → New. Code: BACKTOSCHOOL. Discount: First month free on the Family Plan. Expires 28 February. Redemption cap as you choose.",
+    },
+    {
+      num: "02",
+      title: "Replicate for the mid-year run",
+      body:
+        "Create a matching MIDYEAR code with the same mechanics. Expires 31 July. Two campaigns per year, both built once, both auto-promoted.",
+    },
+    {
+      num: "03",
+      title: "Schedule the campaign emails in your CRM",
+      body:
+        "In your CRM or email tool, schedule the BACKTOSCHOOL email for 15 January and the MIDYEAR email for 15 June. Set them as recurring annual sends. Built once, both auto-promote forever.",
+    },
+    {
+      num: "04",
+      title: "Use signage and reception scripts during the window",
+      body:
+        "Print the campaign flyer from Marketing → Marketing Shop. Stack at reception. Train staff to mention 'School holiday family offer' at every adult appointment.",
+    },
+    {
+      num: "05",
+      title: "Track campaign attribution",
+      body:
+        "Reports → Promo Code Performance. Compare BACKTOSCHOOL and MIDYEAR redemptions year on year. Tune the discount level if you need more volume.",
+    },
+  ],
+
+  /* ─── Emergency ─── */
+
+  "emergency-safety-net": [
+    {
+      num: "01",
+      title: "Build the Emergency Safety-Net plan",
+      body:
+        "Membership Builder, $12 to $18 per month. Inclusions: 2 emergency visits per year, 15% off all repairs, free same-day triage call. No preventive care included.",
+    },
+    {
+      num: "02",
+      title: "Position it for fee-for-service patients who refuse memberships",
+      body:
+        "The pitch: 'You don't want a full membership, fair enough. But for the cost of a coffee a month, the next time something breaks at 11pm on a Sunday, you're not paying the after-hours emergency rate.'",
+    },
+    {
+      num: "03",
+      title: "Trigger the offer in emergency follow-ups",
+      body:
+        "In your CRM, set up an automated email triggered 7 days after any emergency visit, offering the Emergency Safety-Net plan. Recovery rate on this email is high because the patient just experienced the exact pain point the plan covers.",
+    },
+    {
+      num: "04",
+      title: "Make it the closing offer of every after-hours call",
+      body:
+        "When the on-call dentist takes an after-hours call, the script ends with: 'We have an Emergency Safety-Net plan that would have covered tonight's call-out. Want me to send you the details?'",
+    },
+    {
+      num: "05",
+      title: "Watch attach rate post-emergency",
+      body:
+        "Reports → Emergency Follow-Up Conversion. Target: 15 to 25% of patients who attend an emergency visit attach to the plan within 14 days.",
+    },
+  ],
+};
+
+/** Find the setup checklist for a strategy by slug. */
+export function getStrategySetup(slug: string): SetupStep[] | undefined {
+  return STRATEGY_SETUPS[slug];
 }

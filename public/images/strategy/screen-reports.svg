@@ -1,0 +1,214 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1366 800" role="img" aria-label="SmilePass Home dashboard">
+  <defs>
+    <style>
+      .ff{font-family:'Inter','Helvetica Neue',Arial,sans-serif}
+      .label{font-size:11.5px;fill:#5F5C7F;font-weight:500;letter-spacing:.04em}
+      .crumb-up{font-size:11px;fill:#5F5C7F;text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+      .kpi-name{font-size:14px;fill:#252156;font-weight:500}
+      .kpi-big{font-size:30px;fill:#252156;font-weight:600;letter-spacing:-.02em}
+      .up{font-size:11.5px;fill:#0E8A4F;font-weight:600}
+      .dn{font-size:11.5px;fill:#C84545;font-weight:600}
+      .muted{font-size:11.5px;fill:#7B789C}
+      .h2{font-size:14px;fill:#252156;font-weight:600}
+      .nav{font-size:13px;fill:#252156;font-weight:500}
+      .nav-mute{font-size:13px;fill:#7B789C;font-weight:400}
+    </style>
+  </defs>
+  <!-- Page background -->
+  <rect width="1366" height="800" fill="#F6F4FB"/>
+
+  <!-- Left sidebar -->
+  <rect x="0" y="0" width="232" height="800" fill="#FFFFFF"/>
+  <!-- Logo -->
+  <rect x="32" y="32" width="32" height="32" rx="8" fill="#7D7AF2"/>
+  <path d="M44 48 a8 8 0 0 1 8 0" stroke="#FFFFFF" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <text x="74" y="56" class="ff" font-size="20" fill="#252156" font-weight="700">SmilePass</text>
+  <!-- Nav items -->
+  <rect x="20" y="100" width="192" height="40" rx="8" fill="#F1F0FD"/>
+  <text x="40" y="125" class="ff nav" fill="#7D7AF2" font-weight="600">⌂ Home</text>
+  <text x="40" y="173" class="ff nav-mute">⌽ Membership</text>
+  <text x="40" y="213" class="ff nav-mute">$ Payment Plan</text>
+  <text x="40" y="253" class="ff nav-mute">◔ Reporting</text>
+  <!-- Bottom -->
+  <text x="40" y="745" class="ff nav-mute">? Support</text>
+  <text x="40" y="773" class="ff nav-mute">⚙ Settings</text>
+
+  <!-- Top action bar -->
+  <rect x="252" y="20" width="1094" height="56" rx="14" fill="#FFFFFF" stroke="#E5E3F0"/>
+  <circle cx="290" cy="48" r="18" fill="#7D7AF2"/>
+  <text x="290" y="54" class="ff" font-size="18" fill="#FFFFFF" font-weight="600" text-anchor="middle">+</text>
+  <circle cx="340" cy="48" r="12" fill="#F1F0FD"/>
+  <text x="340" y="52" class="ff" font-size="10" fill="#7D7AF2" font-weight="600" text-anchor="middle">P+</text>
+  <circle cx="378" cy="48" r="12" fill="#F1F0FD"/>
+  <text x="378" y="52" class="ff" font-size="10" fill="#7D7AF2" font-weight="600" text-anchor="middle">⌕</text>
+  <rect x="1024" y="32" width="132" height="32" rx="16" fill="#7D7AF2"/>
+  <text x="1090" y="52" class="ff" font-size="12" fill="#FFFFFF" font-weight="600" text-anchor="middle">UPGRADE NOW</text>
+  <circle cx="1180" cy="48" r="10" fill="#F4F2FB"/>
+  <circle cx="1210" cy="48" r="10" fill="#F4F2FB"/>
+  <text x="1248" y="44" class="ff" font-size="12" fill="#252156" font-weight="600">Dr Test</text>
+  <text x="1248" y="58" class="ff" font-size="10" fill="#7B789C">Practice owner</text>
+  <circle cx="1318" cy="48" r="14" fill="#7D7AF2"/>
+  <text x="1318" y="53" class="ff" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">D</text>
+
+  <!-- Welcome banner -->
+  <rect x="252" y="92" width="744" height="44" rx="10" fill="#FFFFFF" stroke="#E5E3F0"/>
+  <text x="272" y="119" class="ff" font-size="13" fill="#252156">
+    <tspan font-weight="600">Welcome to SmilePass Connect</tspan>
+    <tspan fill="#7B789C"> — The Next Level in Dental Payment Solutions.</tspan>
+  </text>
+
+  <!-- Product chip grid -->
+  <rect x="252" y="148" width="744" height="116" rx="14" fill="#FFFFFF" stroke="#E5E3F0"/>
+  <!-- Row 1: live -->
+  <rect x="272" y="168" width="168" height="38" rx="8" fill="#FFFFFF" stroke="#7D7AF2"/>
+  <text x="356" y="192" class="ff" font-size="13" fill="#252156" font-weight="600" text-anchor="middle">Membership</text>
+  <rect x="452" y="168" width="168" height="38" rx="8" fill="#FFFFFF" stroke="#7D7AF2"/>
+  <text x="536" y="192" class="ff" font-size="13" fill="#252156" font-weight="600" text-anchor="middle">Payment Plan</text>
+  <rect x="632" y="168" width="168" height="38" rx="8" fill="#FFFFFF" stroke="#7D7AF2"/>
+  <text x="716" y="192" class="ff" font-size="13" fill="#252156" font-weight="600" text-anchor="middle">Online Payments</text>
+  <rect x="812" y="168" width="168" height="38" rx="8" fill="#F4F2FB"/>
+  <text x="896" y="192" class="ff" font-size="13" fill="#7B789C" text-anchor="middle">Savings</text>
+  <!-- Row 2: more options -->
+  <rect x="272" y="216" width="168" height="38" rx="8" fill="#F4F2FB"/>
+  <text x="356" y="240" class="ff" font-size="13" fill="#7B789C" text-anchor="middle">Gift Card</text>
+  <rect x="452" y="216" width="168" height="38" rx="8" fill="#F4F2FB"/>
+  <text x="536" y="240" class="ff" font-size="13" fill="#7B789C" text-anchor="middle">Superannuation</text>
+  <rect x="632" y="216" width="168" height="38" rx="8" fill="#F4F2FB"/>
+  <text x="716" y="240" class="ff" font-size="13" fill="#7B789C" text-anchor="middle">Crypto</text>
+  <rect x="812" y="216" width="168" height="38" rx="8" fill="#F4F2FB"/>
+  <text x="896" y="240" class="ff" font-size="13" fill="#7B789C" text-anchor="middle">Crowdfunding</text>
+
+  <!-- KPI cards row -->
+  <rect x="252" y="280" width="240" height="156" rx="14" fill="#FFFFFF" stroke="#E5E3F0"/>
+  <text x="272" y="306" class="ff kpi-name">Members</text>
+  <text x="272" y="346" class="ff kpi-big">284</text>
+  <text x="356" y="346" class="ff up">+3.4%</text>
+  <text x="356" y="362" class="ff muted">This month</text>
+  <rect x="272" y="380" width="200" height="6" rx="3" fill="#F4F2FB"/>
+  <rect x="272" y="380" width="113" height="6" rx="3" fill="#7D7AF2"/>
+  <text x="272" y="408" class="ff muted">Goal of 500 members</text>
+
+  <rect x="504" y="280" width="240" height="156" rx="14" fill="#FFFFFF" stroke="#E5E3F0"/>
+  <text x="524" y="306" class="ff kpi-name">Retention</text>
+  <text x="524" y="346" class="ff kpi-big">96.4%</text>
+  <text x="616" y="346" class="ff up">+1.1pt</text>
+  <text x="616" y="362" class="ff muted">This month</text>
+  <rect x="524" y="380" width="200" height="6" rx="3" fill="#F4F2FB"/>
+  <rect x="524" y="380" width="192" height="6" rx="3" fill="#7D7AF2"/>
+  <text x="524" y="408" class="ff muted">Goal of 95%</text>
+
+  <rect x="756" y="280" width="240" height="156" rx="14" fill="#FFFFFF" stroke="#E5E3F0"/>
+  <text x="776" y="306" class="ff kpi-name">Total Revenue</text>
+  <text x="776" y="346" class="ff kpi-big">$8,420</text>
+  <text x="888" y="346" class="ff up">+12%</text>
+  <text x="888" y="362" class="ff muted">This month</text>
+  <rect x="776" y="380" width="200" height="6" rx="3" fill="#F4F2FB"/>
+  <rect x="776" y="380" width="112" height="6" rx="3" fill="#7D7AF2"/>
+  <text x="776" y="408" class="ff muted">Goal of $15,000</text>
+
+  <!-- Bottom row: charts -->
+  <rect x="252" y="452" width="364" height="328" rx="14" fill="#FFFFFF" stroke="#E5E3F0"/>
+  <text x="272" y="478" class="ff h2">New Members</text>
+  <text x="582" y="478" class="ff kpi-big" font-size="20" text-anchor="end">18</text>
+  <text x="272" y="504" class="ff muted">Last 12 months</text>
+  <!-- bars -->
+  <rect x="272" y="612" width="22" height="40" fill="#F1F0FD"/>
+  <rect x="302" y="600" width="22" height="52" fill="#F1F0FD"/>
+  <rect x="332" y="580" width="22" height="72" fill="#F1F0FD"/>
+  <rect x="362" y="568" width="22" height="84" fill="#F1F0FD"/>
+  <rect x="392" y="552" width="22" height="100" fill="#F1F0FD"/>
+  <rect x="422" y="540" width="22" height="112" fill="#F1F0FD"/>
+  <rect x="452" y="520" width="22" height="132" fill="#7D7AF2"/>
+  <rect x="482" y="504" width="22" height="148" fill="#7D7AF2"/>
+  <rect x="512" y="488" width="22" height="164" fill="#7D7AF2"/>
+  <rect x="542" y="472" width="22" height="180" fill="#7D7AF2"/>
+  <rect x="572" y="460" width="22" height="192" fill="#7D7AF2"/>
+  <line x1="272" y1="660" x2="594" y2="660" stroke="#E5E3F0"/>
+  <text x="272" y="678" class="ff muted" font-size="10">M-11</text>
+  <text x="430" y="678" class="ff muted" font-size="10" text-anchor="middle">M-6</text>
+  <text x="594" y="678" class="ff muted" font-size="10" text-anchor="end">Now</text>
+
+  <rect x="632" y="452" width="364" height="328" rx="14" fill="#FFFFFF" stroke="#E5E3F0"/>
+  <text x="652" y="478" class="ff h2">Committed Payments</text>
+  <text x="962" y="478" class="ff kpi-big" font-size="20" text-anchor="end">$8,420</text>
+  <text x="652" y="504" class="ff muted">Last 12 months · projecting $9,150 next mo</text>
+  <!-- area + line chart -->
+  <path d="M652 632 L692 624 L732 608 L772 588 L812 572 L852 552 L892 530 L932 504 L962 488 L962 660 L652 660 Z" fill="#F1F0FD"/>
+  <path d="M652 632 L692 624 L732 608 L772 588 L812 572 L852 552 L892 530 L932 504 L962 488" stroke="#7D7AF2" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="962" cy="488" r="5" fill="#7D7AF2" stroke="#FFFFFF" stroke-width="2"/>
+  <line x1="652" y1="660" x2="962" y2="660" stroke="#E5E3F0"/>
+  <text x="652" y="678" class="ff muted" font-size="10">M-11</text>
+  <text x="807" y="678" class="ff muted" font-size="10" text-anchor="middle">M-6</text>
+  <text x="962" y="678" class="ff muted" font-size="10" text-anchor="end">Now</text>
+
+  <!-- Right rail -->
+  <rect x="1012" y="92" width="334" height="156" rx="14" fill="#FFFFFF" stroke="#E5E3F0"/>
+  <text x="1032" y="118" class="ff h2">The Club Advantage Level</text>
+  <line x1="1032" y1="156" x2="1326" y2="156" stroke="#E5E3F0" stroke-width="3"/>
+  <line x1="1032" y1="156" x2="1212" y2="156" stroke="#7D7AF2" stroke-width="3"/>
+  <circle cx="1078" cy="156" r="6" fill="#7D7AF2"/>
+  <circle cx="1138" cy="156" r="6" fill="#7D7AF2"/>
+  <circle cx="1180" cy="156" r="6" fill="#7D7AF2"/>
+  <circle cx="1248" cy="156" r="6" fill="#FFFFFF" stroke="#7D7AF2" stroke-width="2"/>
+  <circle cx="1312" cy="156" r="6" fill="#FFFFFF" stroke="#E5E3F0" stroke-width="2"/>
+  <text x="1078" y="180" class="ff muted" font-size="10" text-anchor="middle">25</text>
+  <text x="1138" y="180" class="ff muted" font-size="10" text-anchor="middle">100</text>
+  <text x="1180" y="180" class="ff muted" font-size="10" text-anchor="middle">250</text>
+  <text x="1248" y="180" class="ff muted" font-size="10" text-anchor="middle">500</text>
+  <text x="1312" y="180" class="ff muted" font-size="10" text-anchor="middle">1000</text>
+  <text x="1078" y="200" class="ff" font-size="10" fill="#7D7AF2" text-anchor="middle" font-weight="600">Emerging</text>
+  <text x="1138" y="200" class="ff" font-size="10" fill="#7D7AF2" text-anchor="middle" font-weight="600">Competent</text>
+  <text x="1180" y="200" class="ff" font-size="10" fill="#7D7AF2" text-anchor="middle" font-weight="600">Expert</text>
+  <text x="1248" y="200" class="ff" font-size="10" fill="#7B789C" text-anchor="middle">Elite</text>
+  <text x="1312" y="200" class="ff" font-size="10" fill="#7B789C" text-anchor="middle">Master</text>
+  <text x="1032" y="226" class="ff" font-size="11" fill="#252156" font-weight="600">You're at Expert</text>
+  <text x="1326" y="226" class="ff muted" text-anchor="end">216 to Elite</text>
+
+  <!-- New Member Registrations -->
+  <rect x="1012" y="264" width="334" height="200" rx="14" fill="#FFFFFF" stroke="#E5E3F0"/>
+  <text x="1032" y="290" class="ff h2">New Member Registrations</text>
+  <rect x="1032" y="304" width="92" height="22" rx="11" fill="#F4F2FB"/>
+  <text x="1078" y="318" class="ff muted" text-anchor="middle">Last 7 days ▾</text>
+  <text x="1032" y="350" class="ff label" text-transform="uppercase">Source</text>
+  <text x="1228" y="350" class="ff label" text-anchor="end">Sign-ups</text>
+  <text x="1326" y="350" class="ff label" text-anchor="end">%</text>
+  <text x="1032" y="376" class="ff" font-size="13" fill="#252156">Quote form</text>
+  <text x="1228" y="376" class="ff" font-size="13" fill="#252156" font-weight="600" text-anchor="end">7</text>
+  <text x="1326" y="376" class="ff" font-size="13" fill="#252156" font-weight="600" text-anchor="end">39%</text>
+  <text x="1032" y="402" class="ff" font-size="13" fill="#252156">Referral</text>
+  <text x="1228" y="402" class="ff" font-size="13" fill="#252156" font-weight="600" text-anchor="end">5</text>
+  <text x="1326" y="402" class="ff" font-size="13" fill="#252156" font-weight="600" text-anchor="end">28%</text>
+  <text x="1032" y="428" class="ff" font-size="13" fill="#252156">In-clinic invite</text>
+  <text x="1228" y="428" class="ff" font-size="13" fill="#252156" font-weight="600" text-anchor="end">4</text>
+  <text x="1326" y="428" class="ff" font-size="13" fill="#252156" font-weight="600" text-anchor="end">22%</text>
+  <text x="1032" y="454" class="ff" font-size="13" fill="#252156">Web signup</text>
+  <text x="1228" y="454" class="ff" font-size="13" fill="#252156" font-weight="600" text-anchor="end">2</text>
+  <text x="1326" y="454" class="ff" font-size="13" fill="#252156" font-weight="600" text-anchor="end">11%</text>
+
+  <!-- Latest New Members feed -->
+  <rect x="1012" y="480" width="334" height="300" rx="14" fill="#FFFFFF" stroke="#E5E3F0"/>
+  <text x="1032" y="506" class="ff h2">Latest New Members</text>
+  <!-- entry 1 -->
+  <circle cx="1042" cy="540" r="4" fill="#7D7AF2"/>
+  <text x="1058" y="544" class="ff" font-size="12" fill="#252156" font-weight="600">Member A53</text>
+  <text x="1326" y="544" class="ff muted" text-anchor="end">11:15 am</text>
+  <text x="1058" y="562" class="ff" font-size="11" fill="#7B789C">Joined the Adult Comprehensive plan.</text>
+  <line x1="1032" y1="582" x2="1326" y2="582" stroke="#F4F2FB"/>
+  <!-- entry 2 -->
+  <circle cx="1042" cy="606" r="4" fill="#7D7AF2"/>
+  <text x="1058" y="610" class="ff" font-size="12" fill="#252156" font-weight="600">Member A52</text>
+  <text x="1326" y="610" class="ff muted" text-anchor="end">9:42 am</text>
+  <text x="1058" y="628" class="ff" font-size="11" fill="#7B789C">Added 2 dependents to Family Care.</text>
+  <line x1="1032" y1="648" x2="1326" y2="648" stroke="#F4F2FB"/>
+  <!-- entry 3 -->
+  <circle cx="1042" cy="672" r="4" fill="#7D7AF2"/>
+  <text x="1058" y="676" class="ff" font-size="12" fill="#252156" font-weight="600">Member A51</text>
+  <text x="1326" y="676" class="ff muted" text-anchor="end">Yesterday</text>
+  <text x="1058" y="694" class="ff" font-size="11" fill="#7B789C">Renewed Hygiene Only · 12 mo.</text>
+  <line x1="1032" y1="714" x2="1326" y2="714" stroke="#F4F2FB"/>
+  <!-- entry 4 -->
+  <circle cx="1042" cy="738" r="4" fill="#7D7AF2"/>
+  <text x="1058" y="742" class="ff" font-size="12" fill="#252156" font-weight="600">Member A50</text>
+  <text x="1326" y="742" class="ff muted" text-anchor="end">Yesterday</text>
+  <text x="1058" y="760" class="ff" font-size="11" fill="#7B789C">Used referral code from Member A24.</text>
+</svg>
