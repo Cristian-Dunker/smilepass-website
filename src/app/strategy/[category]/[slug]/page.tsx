@@ -3,6 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
+import MarkdownContent, { rewriteDocHref } from "@/components/common/MarkdownContent";
+import Breadcrumbs from "@/components/common/Breadcrumbs";
 import RequestDemoButton from "@/components/forms/RequestDemoButton";
 import {
   STRATEGIES,
@@ -10,6 +12,8 @@ import {
   getCategoryById,
   getStrategiesInCategory,
   getStrategySetup,
+  strategyPath,
+  strategyCategoryPath,
   type SetupStep,
 } from "@/data/strategy/strategies";
 
@@ -272,12 +276,15 @@ function getStepImage(slug: string, step: SetupStep): StepImage | null {
 // entry to STEP_SCREENS — never reintroduce keyword inference.
 
 interface PageProps {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ category: string; slug: string }>;
 }
 
-/** Pre-render every strategy at build time. */
+/** Only the canonical category/slug pairs render; anything else 404s. */
+export const dynamicParams = false;
+
+/** Pre-render every strategy at build time, under its category. */
 export function generateStaticParams() {
-  return STRATEGIES.map((s) => ({ slug: s.slug }));
+  return STRATEGIES.map((s) => ({ category: s.categoryId, slug: s.slug }));
 }
 
 export async function generateMetadata(
@@ -286,30 +293,32 @@ export async function generateMetadata(
   const { slug } = await params;
   const strategy = getStrategyBySlug(slug);
   if (!strategy) return { title: "Strategy not found" };
+  const canonical = `https://smilepass.com.au${strategyPath(strategy)}`;
   return {
     title: strategy.title,
     description: strategy.lead,
-    alternates: { canonical: `https://smilepass.com.au/strategy/${strategy.slug}` },
+    alternates: { canonical },
     openGraph: {
       title: `${strategy.title} — SmilePass Strategy`,
       description: strategy.lead,
-      url: `https://smilepass.com.au/strategy/${strategy.slug}`,
+      url: canonical,
     },
   };
 }
 
 /**
- * /strategy/[slug] — one strategy per page.
+ * /strategy/[category]/[slug] — one strategy per page.
  *
  * Marketing-focused: hero (category tag + title + lead), Markdown body,
  * sibling-strategy nav at the bottom (other strategies in the same
  * category), and prominent CTAs. Bodies are authored in
- * `data/strategy/strategies.ts` and rendered via react-markdown.
+ * `data/strategy/strategies.ts` and rendered via the shared MarkdownContent.
  */
 export default async function StrategyPage({ params }: PageProps) {
-  const { slug } = await params;
+  const { category: categoryParam, slug } = await params;
   const strategy = getStrategyBySlug(slug);
-  if (!strategy) notFound();
+  // Guard the parent segment: a strategy is only valid under its own category.
+  if (!strategy || strategy.categoryId !== categoryParam) notFound();
 
   const category = getCategoryById(strategy.categoryId);
   const siblings = category
@@ -323,24 +332,18 @@ export default async function StrategyPage({ params }: PageProps) {
       <section className="bg-mist pt-[110px] lg:pt-[130px] pb-10 lg:pb-12 px-6 lg:px-10">
         <div className="max-w-3xl mx-auto">
           {/* Breadcrumb */}
-          <nav
-            aria-label="Breadcrumb"
-            className="mb-6 text-[0.82rem] text-purple-deep/60"
-          >
-            <Link href="/" className="hover:text-brand-purple transition-colors">
-              Home
-            </Link>
-            <span aria-hidden className="mx-2">›</span>
-            <Link href="/strategy" className="hover:text-brand-purple transition-colors">
-              Strategy
-            </Link>
-            {category && (
-              <>
-                <span aria-hidden className="mx-2">›</span>
-                <span className="text-purple-deep/80">{category.title}</span>
-              </>
-            )}
-          </nav>
+          <Breadcrumbs
+            variant="light"
+            className="mb-6"
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Strategy", href: "/strategy" },
+              ...(category
+                ? [{ label: category.title, href: strategyCategoryPath(category.id) }]
+                : []),
+              { label: strategy.title },
+            ]}
+          />
 
           <p className="text-[0.72rem] font-semibold tracking-[0.2em] uppercase text-brand-purple mb-3 reveal">
             {category ? `${category.title} · Strategy ${strategy.order}` : `Strategy ${strategy.order}`}
@@ -360,9 +363,9 @@ export default async function StrategyPage({ params }: PageProps) {
       {/* Body */}
       <section className="bg-paper py-12 lg:py-16 px-6 lg:px-10">
         <div className="max-w-3xl mx-auto">
-          <div className="wiki-article prose-body">
-            <ReactMarkdown>{strategy.body}</ReactMarkdown>
-          </div>
+          <MarkdownContent className="wiki-article prose-body">
+            {strategy.body}
+          </MarkdownContent>
 
           {/* Setup steps — "Launch this in SmilePass" */}
           {setup && setup.length > 0 && (
@@ -403,7 +406,7 @@ export default async function StrategyPage({ params }: PageProps) {
                 {siblings.map((s) => (
                   <Link
                     key={s.slug}
-                    href={`/strategy/${s.slug}`}
+                    href={strategyPath(s)}
                     className="group block bg-bone border border-divider rounded-xl p-5 hover:border-brand-purple hover:bg-brand-purple/[0.04] transition-colors"
                   >
                     <h4
@@ -493,7 +496,7 @@ function SetupSection({ slug, steps }: { slug: string; steps: SetupStep[] }) {
                     p: ({ children }) => <p className="m-0">{children}</p>,
                     a: ({ href, children }) => (
                       <a
-                        href={href ?? "#"}
+                        href={rewriteDocHref(href ?? "#")}
                         className="text-brand-purple font-medium underline decoration-brand-purple/30 underline-offset-2 hover:text-brand-purple-hover hover:decoration-brand-purple-hover transition-colors"
                       >
                         {children}

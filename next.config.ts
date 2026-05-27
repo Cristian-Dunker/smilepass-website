@@ -32,33 +32,40 @@ const nextConfig: NextConfig = {
    * bouncing the visitor into another 404.
    */
   redirects: async () => [
-    // Legacy live-site slug for online-payments uses /instant-payment.
-    { source: "/instant-payment", destination: "/online-payments", permanent: true },
-    { source: "/instant-payment/", destination: "/online-payments", permanent: true },
+    // Solution hubs live under /solutions/*. The flat slugs (old WP site +
+    // the earlier flat build) 301 to their nested home.
+    { source: "/membership-plans", destination: "/solutions/membership-plans", permanent: true },
+    { source: "/membership-plans/", destination: "/solutions/membership-plans", permanent: true },
+    { source: "/payment-plans", destination: "/solutions/payment-plans", permanent: true },
+    { source: "/payment-plans/", destination: "/solutions/payment-plans", permanent: true },
+    { source: "/online-payments", destination: "/solutions/online-payments", permanent: true },
+    { source: "/online-payments/", destination: "/solutions/online-payments", permanent: true },
+    { source: "/instant-payment", destination: "/solutions/online-payments", permanent: true },
+    { source: "/instant-payment/", destination: "/solutions/online-payments", permanent: true },
 
-    // Trailing-slash variants of our actual product pages so external links
-    // such as /membership-plans/ from the old WP site still resolve cleanly.
-    { source: "/membership-plans/", destination: "/membership-plans", permanent: true },
-    { source: "/payment-plans/", destination: "/payment-plans", permanent: true },
-    { source: "/online-payments/", destination: "/online-payments", permanent: true },
+    // Trailing-slash variants of content sections.
     { source: "/pricing/", destination: "/pricing", permanent: true },
     { source: "/strategy/", destination: "/strategy", permanent: true },
     { source: "/wiki/", destination: "/wiki", permanent: true },
 
-    // Legacy product slugs without dedicated new pages → funnel to the
-    // closest matching product page.
-    { source: "/dental-savings-account", destination: "/membership-plans", permanent: true },
-    { source: "/dental-savings-account/", destination: "/membership-plans", permanent: true },
-    { source: "/dental-loans", destination: "/payment-plans", permanent: true },
-    { source: "/dental-loans/", destination: "/payment-plans", permanent: true },
-    { source: "/loyalty-referral-programs", destination: "/membership-plans", permanent: true },
-    { source: "/loyalty-referral-programs/", destination: "/membership-plans", permanent: true },
-    { source: "/access-superannuation", destination: "/payment-plans", permanent: true },
-    { source: "/access-superannuation/", destination: "/payment-plans", permanent: true },
-    { source: "/crowdfunding", destination: "/payment-plans", permanent: true },
-    { source: "/crowdfunding/", destination: "/payment-plans", permanent: true },
-    { source: "/crypto-payments", destination: "/online-payments", permanent: true },
-    { source: "/crypto-payments/", destination: "/online-payments", permanent: true },
+    // "Solutions" is not a standalone page — it anchors to the home #solutions
+    // section that describes all three hubs.
+    { source: "/solutions", destination: "/#solutions", permanent: true },
+    { source: "/solutions/", destination: "/#solutions", permanent: true },
+
+    // Legacy product slugs without dedicated pages → closest hub.
+    { source: "/dental-savings-account", destination: "/solutions/membership-plans", permanent: true },
+    { source: "/dental-savings-account/", destination: "/solutions/membership-plans", permanent: true },
+    { source: "/dental-loans", destination: "/solutions/payment-plans", permanent: true },
+    { source: "/dental-loans/", destination: "/solutions/payment-plans", permanent: true },
+    { source: "/loyalty-referral-programs", destination: "/solutions/membership-plans", permanent: true },
+    { source: "/loyalty-referral-programs/", destination: "/solutions/membership-plans", permanent: true },
+    { source: "/access-superannuation", destination: "/solutions/payment-plans", permanent: true },
+    { source: "/access-superannuation/", destination: "/solutions/payment-plans", permanent: true },
+    { source: "/crowdfunding", destination: "/solutions/payment-plans", permanent: true },
+    { source: "/crowdfunding/", destination: "/solutions/payment-plans", permanent: true },
+    { source: "/crypto-payments", destination: "/solutions/online-payments", permanent: true },
+    { source: "/crypto-payments/", destination: "/solutions/online-payments", permanent: true },
 
     // Forms / CTAs / contact: legacy slugs → current routes.
     { source: "/request-a-demo", destination: "/contact", permanent: true },

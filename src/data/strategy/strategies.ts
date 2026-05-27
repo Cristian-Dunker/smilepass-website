@@ -1478,6 +1478,27 @@ export function getStrategiesInCategory(categoryId: string): Strategy[] {
   );
 }
 
+/* ─ URL builders (canonical nested IA: /strategy/<category>/<strategy>) ─ */
+
+/** Canonical path for a strategy: `/strategy/<categoryId>/<slug>`. */
+export function strategyPath(strategy: Strategy): string {
+  return `/strategy/${strategy.categoryId}/${strategy.slug}`;
+}
+
+/** Canonical path for a category landing: `/strategy/<categoryId>`. */
+export function strategyCategoryPath(categoryId: string): string {
+  return `/strategy/${categoryId}`;
+}
+
+/**
+ * Resolve a bare `/strategy/<slug>` href (as authored in markdown) to the
+ * canonical nested path. Falls back to the input if the slug is unknown.
+ */
+export function resolveStrategyHref(slug: string): string {
+  const strategy = getStrategyBySlug(slug);
+  return strategy ? strategyPath(strategy) : `/strategy/${slug}`;
+}
+
 /* ─────────────────────────────────────────────────────────── */
 /*  Setup steps — "How to launch this in SmilePass" per strategy.
  *

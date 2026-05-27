@@ -1,54 +1,60 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import ReactMarkdown from "react-markdown";
+import Breadcrumbs from "@/components/common/Breadcrumbs";
+import MarkdownContent from "@/components/common/MarkdownContent";
 import WikiSideMenu from "@/components/wiki/WikiSideMenu";
 import {
   WIKI_ARTICLES,
   getArticleBySlug,
   getNextArticle,
   getTrackById,
+  wikiArticlePath,
+  wikiTrackPath,
 } from "@/data/wiki/articles";
 
 interface PageProps {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ track: string; slug: string }>;
 }
 
-/** Pre-render every wiki article at build time. */
+/** Only the canonical track/slug pairs render; anything else 404s. */
+export const dynamicParams = false;
+
+/** Pre-render every wiki article at build time, under its track. */
 export function generateStaticParams() {
-  return WIKI_ARTICLES.map((a) => ({ slug: a.slug }));
+  return WIKI_ARTICLES.map((a) => ({ track: a.trackId, slug: a.slug }));
 }
 
-export async function generateMetadata(
-  { params }: PageProps,
-): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const article = getArticleBySlug(slug);
   if (!article) return { title: "Wiki article not found" };
+  const canonical = `https://smilepass.com.au${wikiArticlePath(article)}`;
   return {
     title: article.title,
     description: article.lead,
-    alternates: { canonical: `https://smilepass.com.au/wiki/${article.slug}` },
+    alternates: { canonical },
     openGraph: {
       title: `${article.title} — SmilePass Wiki`,
       description: article.lead,
-      url: `https://smilepass.com.au/wiki/${article.slug}`,
+      url: canonical,
     },
   };
 }
 
 /**
- * /wiki/[slug] — one article per page.
+ * /wiki/[track]/[slug] — one article per page.
  *
- * Content comes from `data/wiki/articles.ts` and is rendered via
- * react-markdown. Layout: breadcrumb + title/lead + Markdown body +
- * "Next step" link. Side menu (left) is shared with the /wiki index so
- * navigation feels consistent.
+ * Content comes from `data/wiki/articles.ts` and is rendered via the shared
+ * MarkdownContent (which rewrites inline /wiki and /strategy links to their
+ * nested form). Layout: breadcrumb + title/lead + body + "Next step" link.
+ * Side menu (left) is shared with the /wiki index so navigation is consistent.
  */
 export default async function WikiArticlePage({ params }: PageProps) {
-  const { slug } = await params;
+  const { track: trackId, slug } = await params;
   const article = getArticleBySlug(slug);
-  if (!article) notFound();
+  // Guard the parent segment: an article is only valid under its own track.
+  if (!article || article.trackId !== trackId) notFound();
 
   const track = getTrackById(article.trackId);
   const next = getNextArticle(article);
@@ -64,24 +70,16 @@ export default async function WikiArticlePage({ params }: PageProps) {
         {/* Article */}
         <article className="lg:col-span-9 max-w-3xl">
           {/* Breadcrumb */}
-          <nav
-            aria-label="Breadcrumb"
-            className="mb-6 text-[0.82rem] text-purple-deep/60"
-          >
-            <Link href="/" className="hover:text-brand-purple transition-colors">
-              Home
-            </Link>
-            <span aria-hidden className="mx-2">›</span>
-            <Link href="/wiki" className="hover:text-brand-purple transition-colors">
-              Wiki
-            </Link>
-            {track && (
-              <>
-                <span aria-hidden className="mx-2">›</span>
-                <span className="text-purple-deep/80">{track.title}</span>
-              </>
-            )}
-          </nav>
+          <Breadcrumbs
+            variant="light"
+            className="mb-6"
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Wiki", href: "/wiki" },
+              ...(track ? [{ label: track.title, href: wikiTrackPath(track.id) }] : []),
+              { label: article.title },
+            ]}
+          />
 
           {/* Header */}
           <header className="mb-8">
@@ -100,14 +98,14 @@ export default async function WikiArticlePage({ params }: PageProps) {
           </header>
 
           {/* Markdown body */}
-          <div className="wiki-article prose-body">
-            <ReactMarkdown>{article.body}</ReactMarkdown>
-          </div>
+          <MarkdownContent className="wiki-article prose-body">
+            {article.body}
+          </MarkdownContent>
 
           {/* Next step */}
           {next ? (
             <Link
-              href={`/wiki/${next.slug}`}
+              href={wikiArticlePath(next)}
               className="group block bg-mist rounded-2xl border border-divider hover:border-brand-purple hover:bg-brand-purple/[0.04] p-6 lg:p-7 mt-12 transition-colors"
             >
               <p className="text-[0.7rem] font-semibold tracking-[0.18em] uppercase text-brand-purple mb-2">
@@ -129,7 +127,7 @@ export default async function WikiArticlePage({ params }: PageProps) {
                 End of the wiki
               </p>
               <p className="text-purple-deep text-[1.1rem] mb-2" style={{ fontWeight: 500 }}>
-                You've reached the end. Where now?
+                You&apos;ve reached the end. Where now?
               </p>
               <div className="flex flex-wrap gap-3 mt-4">
                 <Link href="/wiki" className="btn-primary text-[0.9rem]">

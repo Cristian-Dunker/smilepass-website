@@ -70,7 +70,7 @@ export interface SolutionCategoryData {
 
 /* ─────────────────────────── Component ─────────────────────────── */
 
-export default function SolutionCategoryPageTemplate({ data }: { data: SolutionCategoryData }) {
+export default function SolutionPageTemplate({ data }: { data: SolutionCategoryData }) {
   return (
     <>
       <Hero hero={data.hero} />

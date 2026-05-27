@@ -1,6 +1,6 @@
 import type { SolutionCategoryData } from "@/components/solutions/SolutionPageTemplate";
 
-const CANONICAL = "https://smilepass.com.au/payment-plans";
+const CANONICAL = "https://smilepass.com.au/solutions/payment-plans";
 
 const IconDesign = (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-6 h-6">
@@ -46,7 +46,7 @@ export const paymentPlansPageData: SolutionCategoryData = {
     secondaryCta: { label: "View pricing", href: "/pricing" },
     breadcrumb: [
       { label: "Home", href: "/" },
-      { label: "Solutions" },
+      { label: "Solutions", href: "/#solutions" },
       { label: "Payment Plans" },
     ],
   },

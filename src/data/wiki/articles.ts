@@ -1376,3 +1376,25 @@ export function getArticlesInTrack(trackId: string): WikiArticle[] {
 export function getNextArticle(article: WikiArticle): WikiArticle | undefined {
   return article.nextSlug ? getArticleBySlug(article.nextSlug) : undefined;
 }
+
+/* ─── URL builders (canonical nested IA: /wiki/<track>/<article>) ─── */
+
+/** Canonical path for an article: `/wiki/<trackId>/<slug>`. */
+export function wikiArticlePath(article: WikiArticle): string {
+  return `/wiki/${article.trackId}/${article.slug}`;
+}
+
+/** Canonical path for a track landing: `/wiki/<trackId>`. */
+export function wikiTrackPath(trackId: string): string {
+  return `/wiki/${trackId}`;
+}
+
+/**
+ * Resolve a bare `/wiki/<slug>` href (as authored in article markdown) to the
+ * canonical nested path. Falls back to the input path if the slug is unknown
+ * (e.g. it's already a track id), so it never produces a dead link.
+ */
+export function resolveWikiHref(slug: string): string {
+  const article = getArticleBySlug(slug);
+  return article ? wikiArticlePath(article) : `/wiki/${slug}`;
+}

@@ -20,7 +20,7 @@ export interface PrimaryNavItem {
 
 /** Top-nav items — Solutions ▾ · Pricing · Wiki · Strategy · Contact. */
 export const primaryNav: PrimaryNavItem[] = [
-  { label: "Solutions", href: solutions[0].href, hasDropdown: true },
+  { label: "Solutions", href: "/#solutions", hasDropdown: true },
   { label: "Pricing", href: "/pricing" },
   { label: "Wiki", href: "/wiki" },
   { label: "Strategy", href: "/strategy" },

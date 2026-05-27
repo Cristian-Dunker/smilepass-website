@@ -71,6 +71,7 @@ export default function Header() {
   return (
     <header
       ref={dropdownRef}
+      onMouseLeave={() => setOpenDropdown(null)}
       className={`fixed top-0 left-0 right-0 z-50 h-[68px] transition-colors duration-200 ${bgClass}`}
     >
       <div className="max-w-7xl mx-auto h-full px-6 lg:px-10 flex items-center justify-between">
@@ -89,7 +90,11 @@ export default function Header() {
         {/* Desktop nav */}
         <nav className="hidden lg:flex items-center gap-1">
           {primaryNav.map((item) => (
-            <div key={item.label} className="relative">
+            <div
+              key={item.label}
+              className="relative"
+              onMouseEnter={() => setOpenDropdown(item.hasDropdown ? item.label : null)}
+            >
               {item.hasDropdown ? (
                 <div className="flex items-center text-[0.92rem] font-medium text-ink">
                   <Link

@@ -6,6 +6,8 @@ import {
   WIKI_TRACKS,
   getArticleBySlug,
   getArticlesInTrack,
+  wikiArticlePath,
+  wikiTrackPath,
 } from "@/data/wiki/articles";
 
 /**
@@ -79,18 +81,15 @@ export default function WikiSideMenu({ activeSlug }: WikiSideMenuProps) {
           const panelId = `wiki-track-${track.id}`;
           return (
             <li key={track.id}>
-              <button
-                type="button"
-                onClick={() => toggleTrack(track.id)}
-                aria-expanded={isOpen}
-                aria-controls={panelId}
-                className={`w-full flex items-center justify-between gap-2 text-left px-3 py-2.5 rounded-lg transition-colors ${
-                  isActiveTrack
-                    ? "bg-brand-purple/10 text-purple-deep"
-                    : "text-purple-deep hover:bg-paper/60"
+              <div
+                className={`w-full flex items-center justify-between gap-1 rounded-lg transition-colors ${
+                  isActiveTrack ? "bg-brand-purple/10" : "hover:bg-paper/60"
                 }`}
               >
-                <span className="flex items-baseline gap-2 min-w-0">
+                <Link
+                  href={wikiTrackPath(track.id)}
+                  className="flex items-baseline gap-2 min-w-0 flex-1 px-3 py-2.5 text-purple-deep"
+                >
                   <span
                     aria-hidden
                     className={`flex-shrink-0 text-[0.65rem] font-bold ${
@@ -105,9 +104,18 @@ export default function WikiSideMenu({ activeSlug }: WikiSideMenuProps) {
                   >
                     {track.title}
                   </span>
-                </span>
-                <Chevron open={isOpen} />
-              </button>
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => toggleTrack(track.id)}
+                  aria-expanded={isOpen}
+                  aria-controls={panelId}
+                  aria-label={`${isOpen ? "Collapse" : "Expand"} ${track.title}`}
+                  className="flex-shrink-0 px-3 py-2.5 text-purple-deep"
+                >
+                  <Chevron open={isOpen} />
+                </button>
+              </div>
 
               {isOpen && (
                 <ul id={panelId} className="mt-1 mb-2 ml-3 pl-3 border-l border-divider flex flex-col gap-0.5">
@@ -116,7 +124,7 @@ export default function WikiSideMenu({ activeSlug }: WikiSideMenuProps) {
                     return (
                       <li key={article.slug}>
                         <Link
-                          href={`/wiki/${article.slug}`}
+                          href={wikiArticlePath(article)}
                           className={`block text-[0.88rem] leading-snug px-3 py-1.5 rounded-md transition-colors ${
                             isActive
                               ? "bg-brand-purple/12 text-brand-purple font-semibold"

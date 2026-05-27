@@ -4,6 +4,7 @@ import PricingTiers from "@/components/pricing/PricingTiers";
 import ComparisonTable from "@/components/pricing/ComparisonTable";
 import FAQAccordion from "@/components/common/FAQAccordion";
 import RequestDemoButton from "@/components/forms/RequestDemoButton";
+import PageHero from "@/components/common/PageHero";
 import { PRICING_FAQS, PRICING_TIERS } from "@/data/pricing";
 
 const CANONICAL = "https://smilepass.com.au/pricing";
@@ -91,27 +92,24 @@ export default function PricingPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(offerCatalogSchema) }}
       />
 
-      {/* Hero */}
-      <section className="bg-mist pt-[110px] lg:pt-[130px] pb-10 lg:pb-12 px-6 lg:px-10">
-        <div className="max-w-4xl mx-auto text-center">
-          <p className="text-[0.72rem] font-semibold tracking-[0.2em] uppercase text-brand-purple mb-5 reveal">
-            Pricing
-          </p>
-          <h1
-            className="text-purple-deep mb-5 reveal reveal-delay-1"
-            style={{ fontWeight: 400, lineHeight: 1.05 }}
-          >
+      <PageHero
+        align="center"
+        eyebrow="Pricing"
+        title={
+          <>
             Start free.{" "}
             <em className="display-accent text-brand-purple">Grow at your pace.</em>
-          </h1>
-          <p className="text-[1.05rem] lg:text-[1.15rem] text-purple-deep/75 leading-relaxed reveal reveal-delay-2 max-w-2xl mx-auto">
+          </>
+        }
+        description={
+          <>
             One transparent platform for dental memberships, payment plans, and
             online payments. No setup fee, no lock-in contract, no surprise
             charges. Choose the plan that matches your practice today, change
             it any time as you grow.
-          </p>
-        </div>
-      </section>
+          </>
+        }
+      />
 
       {/* Tier cards */}
       <PricingTiers />

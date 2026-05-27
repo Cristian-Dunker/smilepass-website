@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import SolutionCategoryPageTemplate from "@/components/solutions/SolutionPageTemplate";
+import SolutionPageTemplate from "@/components/solutions/SolutionPageTemplate";
 import {
   paymentPlansPageData,
   paymentPlansCanonical,
@@ -57,7 +57,7 @@ export default function PaymentPlansPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
-      <SolutionCategoryPageTemplate data={paymentPlansPageData} />
+      <SolutionPageTemplate data={paymentPlansPageData} />
     </>
   );
 }

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import ReactMarkdown from "react-markdown";
+import MarkdownContent from "@/components/common/MarkdownContent";
 
 /**
  * WikiChatbot — floating launcher + chat panel mounted on every wiki page.
@@ -346,9 +346,7 @@ function MessageBubble({ message }: { message: ChatMessage }) {
         {isUser ? (
           <span className="whitespace-pre-wrap">{message.content}</span>
         ) : (
-          <div className="chatbot-msg">
-            <ReactMarkdown>{message.content}</ReactMarkdown>
-          </div>
+          <MarkdownContent className="chatbot-msg">{message.content}</MarkdownContent>
         )}
       </div>
 
@@ -365,7 +363,7 @@ function MessageBubble({ message }: { message: ChatMessage }) {
             </div>
           ) : (
             <div className="bg-red-50 border border-red-200 text-red-700 text-[0.82rem] rounded-lg px-3 py-2">
-              Couldn't open a ticket automatically:{" "}
+              Couldn&apos;t open a ticket automatically:{" "}
               {message.ticket.error ?? "unknown error"}. Please use the{" "}
               <a href="/contact" className="font-semibold underline">
                 contact form

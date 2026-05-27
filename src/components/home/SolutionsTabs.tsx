@@ -22,7 +22,7 @@ export default function SolutionsTabs() {
   const active = solutions[activeIdx];
 
   return (
-    <section className="bg-mist py-20 lg:py-28 px-6 lg:px-10">
+    <section id="solutions" className="scroll-mt-24 bg-mist py-20 lg:py-28 px-6 lg:px-10">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
         {/* Sidebar (desktop) — heading + vertical tab list */}
         <aside className="lg:col-span-4">

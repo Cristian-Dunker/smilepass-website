@@ -6,22 +6,29 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 `@smilepass/web` — the SmilePass marketing site. A faithful re-build of the current `smilepass.com.au` (which runs on WordPress + Elementor) in **Next.js 16 + React 19 + Tailwind 4**, with a clean architecture so the team can iterate from a familiar shell instead of inheriting WordPress baggage.
 
-The intent is **structural parity** with the current production site, not a redesign: same menu, same footer hierarchy, same 9 solution names, same hero copy, same section order. The improvements that fall out for free are: (a) actual dedicated pages per solution instead of 9 menu items all pointing to `/payment-plans/`, (b) no placeholder copy in production, (c) modern stack with real performance budget, (d) the brand purples extracted directly from the official logo.
+The intent is **structural parity** with the current production site, not a redesign: same menu, same footer hierarchy, same hero copy, same section order. The improvements that fall out for free are: (a) real, indexable pages instead of WordPress placeholders, (b) no placeholder copy in production, (c) modern stack with real performance budget, (d) the brand purples extracted directly from the official logo.
 
-## ⚠️ Source-of-truth note (drift to be aware of)
+## Information architecture (canonical)
 
-The information architecture **pivoted from 9 product pages to 3 category hubs** mid-build. The redirect map in `next.config.ts` is the canonical statement of the new IA:
+The legacy site listed **9 products**; the current IA collapses them into **3 real solution hubs**, plus two content sections (Wiki, Strategy). **Every URL is nested so it matches its breadcrumb exactly** — the parent segment in the breadcrumb is always a real, linkable page. `next.config.ts` `redirects()` is the canonical legacy-URL map.
 
-- `/solutions/recurring-revenue` ← `membership-plans`, `loyalty-referral-programs`
-- `/solutions/patient-financing` ← `payment-plans`, `dental-loans`, `dental-savings-account`, `access-superannuation`, `crowdfunding`
-- `/solutions/payment-operations` ← `instant-payment`, `online-payments`, `crypto-payments`
+**Solutions — 3 hubs under `/solutions/*`** (each a real `src/app/solutions/<slug>/page.tsx` rendering `SolutionPageTemplate`):
 
-What this means for current state:
+- `/solutions/membership-plans` ← also absorbs `dental-savings-account`, `loyalty-referral-programs` (301)
+- `/solutions/payment-plans` ← also absorbs `dental-loans`, `access-superannuation`, `crowdfunding` (301)
+- `/solutions/online-payments` ← also absorbs `instant-payment`, `crypto-payments` (301)
 
-- The `solutions` registry in `src/data/solutions/index.tsx` still has the **9 legacy entries** with the old per-product `href`s. Those hrefs now 301 via `next.config.ts`. Treat the registry as content data (copy + icons), not as a routing source until it is restructured into the 3-category model.
-- `sitemap.ts` currently emits the 9 legacy slugs (each 301s) and 10 static pages that don't exist yet. Sitemap is **drifted** — do not treat it as authoritative for "what pages exist".
-- Don't create `src/app/{membership-plans,payment-plans,dental-loans,...}/page.tsx` files. They should stay redirects. New work should target `src/app/solutions/{recurring-revenue|patient-financing|payment-operations}/page.tsx`.
-- When in doubt about routing, read `next.config.ts` first. When in doubt about which solutions belong where, read the redirect map in `next.config.ts`.
+The flat legacy slugs (`/membership-plans`, …) 301 to their `/solutions/*` home. `/solutions` (bare) is **not a page** — it 301s to the home `#solutions` section (`SolutionsTabs`), which describes all three; the nav "Solutions" dropdown and the breadcrumb "Solutions" level point there. The `solutions` registry in `src/data/solutions/index.tsx` is the single source of truth (copy + icons + per-hub `href` = `/solutions/<slug>`); nav, home tabs, and sitemap all read from it.
+
+**Wiki** — `/wiki` (index) → `/wiki/[track]` (track landing) → `/wiki/[track]/[slug]` (article). Tracks come from `WIKI_TRACKS`; an article's canonical path is `wikiArticlePath(article)` (`/wiki/<trackId>/<slug>`). Both dynamic routes set `dynamicParams = false` and the article route 404s if the `[track]` segment doesn't match the article's own `trackId`.
+
+**Strategy** — `/strategy` (index) → `/strategy/[category]` (category landing) → `/strategy/[category]/[slug]` (play). Categories come from `STRATEGY_CATEGORIES`; a strategy's canonical path is `strategyPath(s)` (`/strategy/<categoryId>/<slug>`), with the same `dynamicParams = false` + category guard.
+
+**Always build URLs with the path helpers** — `wikiArticlePath` / `wikiTrackPath` (articles.ts) and `strategyPath` / `strategyCategoryPath` (strategies.ts). Never hand-concatenate `/wiki/${slug}` or `/strategy/${slug}` — the parent segment is mandatory.
+
+**Inline doc links** in article/strategy markdown (and chatbot replies) are authored flat (`/wiki/<slug>`, `/strategy/<slug>`) and rewritten to their nested canonical form at render time by `MarkdownContent` (`src/components/common/MarkdownContent.tsx`, which exports `rewriteDocHref` for callers that render `react-markdown` directly, e.g. the strategy SetupSection). So authors keep writing flat links; never encode the parent segment in markdown.
+
+`sitemap.ts` emits only real, terminal nested URLs, auto-derived from the data files via the path helpers. When in doubt about routing, read `next.config.ts` and `sitemap.ts`.
 
 ## Tech stack
 
@@ -247,31 +254,34 @@ Dev mode masks errors that only show up in production. If your change touches a 
 
 ## Adding new things
 
-### A new solution (current 3-category IA)
+### A new solution hub
 
-The current IA has **3 hub pages**, each grouping multiple solutions. Adding a new solution means adding it to one of the existing hubs — not creating a new per-product page. (See the drift note at the top for what changed.)
+The IA has **3 solution hubs** under `/solutions/*`. Most "new solution" work is folding a legacy product into one of these (a 301 + copy on the hub), not a new page. To genuinely add a 4th hub:
 
 1. Add an inline SVG icon component in `src/data/solutions/icons.tsx` (follow the existing weight-1.6 stroke style).
-2. Add an entry to the `solutions` array in `src/data/solutions/index.tsx`. **Set `href` to the parent category hub**, not a per-product slug:
+2. Add an entry to the `solutions` array in `src/data/solutions/index.tsx`. **`href` is the nested hub path:**
    ```tsx
    {
      slug: "new-thing",
      label: "New Thing",
-     href: "/solutions/patient-financing",   // pick the category it belongs to
-     tagline: "Short one-liner for nav dropdowns.",
-     headline: "Headline for the solution's hero",
+     href: "/solutions/new-thing",
+     tagline: "Short one-liner for the nav dropdown.",
+     headline: "Headline for the home tab / page hero",
      description: "Full paragraph for the home tab / page hero.",
      bullets: ["...", "...", "..."],
      imageAlt: "...",
+     imageSrc: "/images/solutions/new-thing.png",
      Icon: NewThingIcon,
    }
    ```
-3. Update the corresponding hub page at `src/app/solutions/<category>/page.tsx` to surface the new solution (section, card, or accordion entry, depending on the hub layout).
-4. If a legacy per-product URL exists in the wild for this solution, add a `301` to `next.config.ts` `redirects()` pointing the legacy slug at the hub.
+3. Create the page at `src/app/solutions/new-thing/page.tsx` rendering `<SolutionPageTemplate data={newThingPageData} />`, with a `src/data/solution-pages/new-thing.tsx` data file (copy `membership-plans.tsx`; set its `CANONICAL` to `https://smilepass.com.au/solutions/new-thing`; its `breadcrumb` ends `{ label: "Solutions", href: "/#solutions" }` then the hub label).
+4. If legacy URLs exist for it, add `301`s in `next.config.ts` `redirects()`.
 
-The header dropdown, footer, home tabs, and home chips strip read from the registry, so they pick the new entry up automatically.
+The nav dropdown, home tabs, and sitemap read from the registry, so they pick the new entry up automatically.
 
-**Adding a 4th category hub** (rare — the IA is intentionally 3): create `src/app/solutions/<new-category>/page.tsx`, list it in `src/app/sitemap.ts`, and decide whether `primaryNav` in `src/data/nav.ts` needs to change (today the "Solutions" dropdown is registry-driven).
+### A new wiki track or strategy category
+
+Tracks/categories are data — add an entry to `WIKI_TRACKS` (`src/data/wiki/articles.ts`) or `STRATEGY_CATEGORIES` (`src/data/strategy/strategies.ts`), then assign articles/strategies to it via their `trackId` / `categoryId`. The landing pages (`/wiki/[track]`, `/strategy/[category]`), the nested article/play routes, the index groupings, the side menu, the breadcrumbs, and the sitemap are all derived — no new routes needed.
 
 ### A new top-level page (e.g. `/pricing`)
 

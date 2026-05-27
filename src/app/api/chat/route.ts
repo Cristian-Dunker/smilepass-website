@@ -1,8 +1,9 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { WIKI_TRACKS, WIKI_ARTICLES, getArticlesInTrack } from "@/data/wiki/articles";
+import { WIKI_TRACKS, getArticlesInTrack, wikiArticlePath } from "@/data/wiki/articles";
 import { sendSupportTicket } from "@/app/actions/send-support-ticket";
+import { supportTicketSchema } from "@/lib/schemas/support-ticket";
 
 /**
  * /api/chat — wiki chatbot endpoint.
@@ -52,7 +53,7 @@ function buildSystemPrompt(): string {
             `### ${a.title} — slug: ${a.slug}\n` +
             `Lead: ${a.lead}\n\n` +
             `${a.body}\n\n` +
-            `Link to this article: /wiki/${a.slug}`,
+            `Link to this article: ${wikiArticlePath(a)}`,
         )
         .join("\n\n---\n\n");
       return `## Track ${track.order}: ${track.title}\n${track.description}\n\n${articleBlocks}`;
@@ -215,28 +216,45 @@ export async function POST(req: Request): Promise<NextResponse<ChatResponse | { 
     );
 
     if (toolUseBlock && toolUseBlock.name === "create_support_ticket") {
-      const toolInput = toolUseBlock.input as {
-        subject?: string;
-        message?: string;
-        userEmail?: string;
-        userName?: string;
-      };
-
-      const result = await sendSupportTicket({
-        subject: toolInput.subject,
-        message: toolInput.message,
-        userEmail: toolInput.userEmail ?? userEmail,
-        userName: toolInput.userName ?? userName,
+      // DTO-at-boundary: validate the model's tool input against the same
+      // schema the action uses, instead of trusting it. Server-side context
+      // (the request's email/name and the current pathname) wins for
+      // provenance fields.
+      const rawInput = toolUseBlock.input as Record<string, unknown>;
+      const toolParse = supportTicketSchema.safeParse({
+        ...rawInput,
+        userEmail: rawInput.userEmail ?? userEmail,
+        userName: rawInput.userName ?? userName,
         sourcePage: pathname,
         source: "Chatbot",
       });
 
-      ticketResult = result.success
-        ? { created: true, subject: toolInput.subject, url: result.ticketUrl }
-        : { created: false, subject: toolInput.subject, error: result.error };
-
-      // Echo the assistant's tool-use turn back, then send the tool result, then loop.
+      // The assistant's tool-use turn must be echoed before any tool_result.
       conversation.push({ role: "assistant", content: response.content });
+
+      if (!toolParse.success) {
+        const detail = toolParse.error.issues.map((i) => i.message).join("; ");
+        conversation.push({
+          role: "user",
+          content: [
+            {
+              type: "tool_result",
+              tool_use_id: toolUseBlock.id,
+              content: `Ticket input was invalid: ${detail}. Ask the user for the missing details, then try again.`,
+              is_error: true,
+            },
+          ],
+        });
+        continue;
+      }
+
+      const ticket = toolParse.data;
+      const result = await sendSupportTicket(ticket);
+
+      ticketResult = result.success
+        ? { created: true, subject: ticket.subject, url: result.ticketUrl }
+        : { created: false, subject: ticket.subject, error: result.error };
+
       conversation.push({
         role: "user",
         content: [
@@ -244,7 +262,7 @@ export async function POST(req: Request): Promise<NextResponse<ChatResponse | { 
             type: "tool_result",
             tool_use_id: toolUseBlock.id,
             content: result.success
-              ? `Ticket created successfully. Subject: "${toolInput.subject}". Notion URL: ${result.ticketUrl ?? "(none returned)"}`
+              ? `Ticket created successfully. Subject: "${ticket.subject}". Notion URL: ${result.ticketUrl ?? "(none returned)"}`
               : `Ticket creation FAILED: ${result.error}`,
             is_error: !result.success,
           },

@@ -1,7 +1,17 @@
 import type { MetadataRoute } from "next";
 import { solutions } from "@/data/nav";
-import { STRATEGIES } from "@/data/strategy/strategies";
-import { WIKI_ARTICLES } from "@/data/wiki/articles";
+import {
+  STRATEGIES,
+  STRATEGY_CATEGORIES,
+  strategyPath,
+  strategyCategoryPath,
+} from "@/data/strategy/strategies";
+import {
+  WIKI_ARTICLES,
+  WIKI_TRACKS,
+  wikiArticlePath,
+  wikiTrackPath,
+} from "@/data/wiki/articles";
 
 const SITE_URL = "https://smilepass.com.au";
 
@@ -33,19 +43,40 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: "monthly" as const,
   }));
 
+  const strategyCategoryRoutes: MetadataRoute.Sitemap = STRATEGY_CATEGORIES.map((c) => ({
+    url: `${SITE_URL}${strategyCategoryPath(c.id)}`,
+    lastModified: now,
+    priority: 0.75,
+    changeFrequency: "monthly" as const,
+  }));
+
   const strategyRoutes: MetadataRoute.Sitemap = STRATEGIES.map((s) => ({
-    url: `${SITE_URL}/strategy/${s.slug}`,
+    url: `${SITE_URL}${strategyPath(s)}`,
     lastModified: now,
     priority: 0.7,
     changeFrequency: "monthly" as const,
   }));
 
+  const wikiTrackRoutes: MetadataRoute.Sitemap = WIKI_TRACKS.map((t) => ({
+    url: `${SITE_URL}${wikiTrackPath(t.id)}`,
+    lastModified: now,
+    priority: 0.6,
+    changeFrequency: "monthly" as const,
+  }));
+
   const wikiRoutes: MetadataRoute.Sitemap = WIKI_ARTICLES.map((a) => ({
-    url: `${SITE_URL}/wiki/${a.slug}`,
+    url: `${SITE_URL}${wikiArticlePath(a)}`,
     lastModified: now,
     priority: 0.55,
     changeFrequency: "monthly" as const,
   }));
 
-  return [...staticRoutes, ...solutionRoutes, ...strategyRoutes, ...wikiRoutes];
+  return [
+    ...staticRoutes,
+    ...solutionRoutes,
+    ...strategyCategoryRoutes,
+    ...strategyRoutes,
+    ...wikiTrackRoutes,
+    ...wikiRoutes,
+  ];
 }

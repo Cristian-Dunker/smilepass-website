@@ -1,6 +1,6 @@
 import type { SolutionCategoryData } from "@/components/solutions/SolutionPageTemplate";
 
-const CANONICAL = "https://smilepass.com.au/membership-plans";
+const CANONICAL = "https://smilepass.com.au/solutions/membership-plans";
 
 /* ─── Icons ─── */
 const IconBuild = (
@@ -48,7 +48,7 @@ export const membershipPlansPageData: SolutionCategoryData = {
     secondaryCta: { label: "View pricing", href: "/pricing" },
     breadcrumb: [
       { label: "Home", href: "/" },
-      { label: "Solutions" },
+      { label: "Solutions", href: "/#solutions" },
       { label: "Membership Plans" },
     ],
   },

@@ -6,16 +6,16 @@ import {
 } from "./icons";
 
 /**
- * Registry of SmilePass solutions surfaced in primary nav, footer dropdowns,
- * home chips strip, and the "All in One Place" tabs.
+ * Registry of SmilePass solutions surfaced in primary nav (Solutions
+ * dropdown), the home "All in One Place" tabs, and the home #solutions
+ * section the breadcrumb level points at.
  *
- * The legacy production site listed 9 products; the current IA promotes 4
- * here while the underlying funnels for the other legacy slugs are handled
- * via `next.config.ts` redirects into the 3 category hubs
- * (`/solutions/recurring-revenue`, `/solutions/patient-financing`,
- * `/solutions/payment-operations`). Adding a solution back to this array
- * makes it appear in every consumer simultaneously — see CLAUDE.md
- * "Adding a new solution".
+ * The legacy production site listed 9 products. The current IA collapses
+ * them into 3 real hub pages — `/membership-plans`, `/payment-plans`,
+ * `/online-payments` — and `next.config.ts` 301s the other 6 legacy slugs
+ * into the closest of these three. Each entry's `href` is its own hub page.
+ * Adding a solution to this array makes it appear in every consumer
+ * simultaneously — see CLAUDE.md "Adding a new solution".
  *
  * Copy is verbatim from the current site's solution cards.
  */
@@ -23,7 +23,7 @@ export const solutions: SolutionData[] = [
   {
     slug: "membership-plans",
     label: "Membership Plans",
-    href: "/membership-plans",
+    href: "/solutions/membership-plans",
     tagline: "Build, launch and grow your own in-house subscription membership.",
     headline: "Dental Membership Plans",
     description:
@@ -40,7 +40,7 @@ export const solutions: SolutionData[] = [
   {
     slug: "payment-plans",
     label: "Payment Plans",
-    href: "/payment-plans",
+    href: "/solutions/payment-plans",
     tagline: "In-house customisable payment plans for treatments.",
     headline: "In-House Payment Plans",
     description:
@@ -57,7 +57,7 @@ export const solutions: SolutionData[] = [
   {
     slug: "online-payments",
     label: "Online Payments",
-    href: "/online-payments",
+    href: "/solutions/online-payments",
     tagline: "Secure card payments by link — no terminal, anywhere.",
     headline: "Online Payments",
     description:
