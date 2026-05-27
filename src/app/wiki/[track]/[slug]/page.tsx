@@ -4,8 +4,10 @@ import { notFound } from "next/navigation";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import MarkdownContent from "@/components/common/MarkdownContent";
 import WikiSideMenu from "@/components/wiki/WikiSideMenu";
+import NewBadge from "@/components/wiki/NewBadge";
 import {
   WIKI_ARTICLES,
+  NEW_ARTICLE_SLUGS,
   getArticleBySlug,
   getNextArticle,
   getTrackById,
@@ -86,6 +88,11 @@ export default async function WikiArticlePage({ params }: PageProps) {
             <p className="text-[0.72rem] font-semibold tracking-[0.2em] uppercase text-brand-purple mb-3">
               {track ? `Track ${track.order} · ${track.title}` : "Wiki article"}
             </p>
+            {NEW_ARTICLE_SLUGS.has(article.slug) && (
+              <div className="mb-3">
+                <NewBadge />
+              </div>
+            )}
             <h1
               className="text-purple-deep mb-3"
               style={{ fontWeight: 400, lineHeight: 1.05, fontSize: "clamp(2rem, 3.5vw, 2.8rem)" }}

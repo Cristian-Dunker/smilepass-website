@@ -197,42 +197,6 @@
   min-height: 220px;
 }
 
-/* ── WIKI CHATBOT (assistant bubble Markdown) ─────────────────────────
-   Tighter typography than the article body — bubbles are constrained. */
-.chatbot-msg p { margin: 0 0 0.5rem; }
-.chatbot-msg p:last-child { margin-bottom: 0; }
-.chatbot-msg a {
-  color: var(--color-brand-purple);
-  font-weight: 500;
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 2px;
-}
-.chatbot-msg a:hover { color: var(--color-brand-purple-hover); }
-.chatbot-msg ul,
-.chatbot-msg ol { padding-left: 1.1rem; margin: 0.35rem 0 0.6rem; }
-.chatbot-msg ul li { list-style: disc; margin: 0.15rem 0; }
-.chatbot-msg ol li { list-style: decimal; margin: 0.15rem 0; }
-.chatbot-msg strong { color: var(--color-purple-deep); font-weight: 600; }
-.chatbot-msg code {
-  font-family: var(--font-mono);
-  font-size: 0.85em;
-  background: var(--color-bone);
-  padding: 0.05rem 0.3rem;
-  border-radius: 3px;
-}
-
-@keyframes smilepass-typing {
-  0%, 60%, 100% { opacity: 0.35; transform: translateY(0); }
-  30%           { opacity: 1;    transform: translateY(-2px); }
-}
-
-@keyframes smilepass-pulse {
-  0%   { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.55); }
-  70%  { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-}
-
 /* ── BUTTONS ── */
 .btn-glow {
   border-radius: 10px;
@@ -329,6 +293,13 @@
 html, body {
   overflow-x: hidden;
   max-width: 100%;
+}
+/* `overflow-x: hidden` on the root makes it a scroll container, which breaks
+   `position: sticky` descendants (e.g. the wiki sidebar). `overflow: clip`
+   clips horizontally WITHOUT creating a scroll container, so sticky keeps
+   working. Fall back to `hidden` where `clip` is unsupported (Safari < 16). */
+@supports (overflow: clip) {
+  html, body { overflow-x: clip; }
 }
 
 @keyframes scroll {

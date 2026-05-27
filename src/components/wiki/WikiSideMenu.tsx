@@ -2,8 +2,12 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import WikiSearch from "./WikiSearch";
+import NewBadge from "./NewBadge";
 import {
   WIKI_TRACKS,
+  NEW_TRACK_IDS,
+  NEW_ARTICLE_SLUGS,
   getArticleBySlug,
   getArticlesInTrack,
   wikiArticlePath,
@@ -66,6 +70,8 @@ export default function WikiSideMenu({ activeSlug }: WikiSideMenuProps) {
       aria-label="Wiki contents"
       className="lg:sticky lg:top-[88px] bg-mist/60 rounded-2xl p-5 border border-divider max-h-[calc(100vh-100px)] overflow-y-auto"
     >
+      <WikiSearch />
+
       <Link
         href="/wiki"
         className="block mb-5 text-[0.75rem] font-semibold tracking-[0.18em] uppercase text-brand-purple hover:text-brand-purple-hover transition-colors"
@@ -104,6 +110,7 @@ export default function WikiSideMenu({ activeSlug }: WikiSideMenuProps) {
                   >
                     {track.title}
                   </span>
+                  {NEW_TRACK_IDS.has(track.id) && <NewBadge className="flex-shrink-0 self-center" />}
                 </Link>
                 <button
                   type="button"
@@ -133,6 +140,9 @@ export default function WikiSideMenu({ activeSlug }: WikiSideMenuProps) {
                           aria-current={isActive ? "page" : undefined}
                         >
                           {article.title}
+                          {NEW_ARTICLE_SLUGS.has(article.slug) && (
+                            <NewBadge className="ml-1.5 align-middle" />
+                          )}
                         </Link>
                       </li>
                     );

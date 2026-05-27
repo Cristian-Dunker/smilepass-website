@@ -4,8 +4,11 @@ import { notFound } from "next/navigation";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import WikiSideMenu from "@/components/wiki/WikiSideMenu";
 import RequestDemoButton from "@/components/forms/RequestDemoButton";
+import NewBadge from "@/components/wiki/NewBadge";
 import {
   WIKI_TRACKS,
+  NEW_TRACK_IDS,
+  NEW_ARTICLE_SLUGS,
   getArticlesInTrack,
   getTrackById,
   wikiArticlePath,
@@ -77,6 +80,11 @@ export default async function WikiTrackPage({ params }: PageProps) {
             <p className="text-[0.72rem] font-semibold tracking-[0.2em] uppercase text-brand-purple mb-3">
               Track {track.order}
             </p>
+            {NEW_TRACK_IDS.has(track.id) && (
+              <div className="mb-3">
+                <NewBadge />
+              </div>
+            )}
             <h1
               className="text-purple-deep mb-3"
               style={{ fontWeight: 400, lineHeight: 1.05, fontSize: "clamp(2rem, 3.5vw, 2.8rem)" }}
@@ -95,9 +103,12 @@ export default async function WikiTrackPage({ params }: PageProps) {
                   href={wikiArticlePath(article)}
                   className="group block bg-bone rounded-2xl border border-divider p-6 lg:p-7 hover:border-brand-purple hover:bg-brand-purple/[0.04] transition-colors"
                 >
-                  <p className="text-[0.7rem] font-semibold tracking-[0.18em] uppercase text-brand-purple mb-2">
-                    Article {idx + 1}
-                  </p>
+                  <div className="flex items-center gap-2 mb-2">
+                    <p className="text-[0.7rem] font-semibold tracking-[0.18em] uppercase text-brand-purple">
+                      Article {idx + 1}
+                    </p>
+                    {NEW_ARTICLE_SLUGS.has(article.slug) && <NewBadge />}
+                  </div>
                   <h2
                     className="text-purple-deep text-[1.2rem] lg:text-[1.3rem] mb-2 group-hover:text-brand-purple transition-colors"
                     style={{ fontWeight: 500, lineHeight: 1.15, letterSpacing: "-0.005em" }}
@@ -122,8 +133,7 @@ export default async function WikiTrackPage({ params }: PageProps) {
             </h3>
             <p className="text-[0.95rem] text-purple-deep/75 leading-relaxed mb-5">
               You can sign up free at any time — no demo booking required. If
-              you&apos;d rather a hand getting set up, the chatbot bottom-right
-              can answer most questions instantly, or drop us a line.
+              you&apos;d rather a hand getting set up, drop us a line.
             </p>
             <div className="flex flex-wrap gap-3">
               <a

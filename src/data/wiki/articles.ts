@@ -1,10 +1,8 @@
 /**
- * Wiki content — single source of truth for /wiki/[slug] pages AND the
- * chatbot's grounded knowledge base.
+ * Wiki content — single source of truth for the /wiki/[track]/[slug] pages.
  *
  * Articles are authored as Markdown in the `body` field and rendered with
- * react-markdown on the article page. The chatbot reads the same bodies
- * to answer questions, citing the article slug it learned from.
+ * react-markdown (via MarkdownContent) on the article page.
  *
  * Per work rule #2 (zero inline duplication): every consumer of wiki
  * content imports from here. Adding an article = appending to WIKI_ARTICLES
@@ -30,6 +28,8 @@ export interface WikiArticle {
   order: number;
   /** Markdown body. Rendered with react-markdown. */
   body: string;
+  /** Optional search terms / synonyms not already in the title or lead. */
+  keywords?: string[];
   /**
    * Slug of the natural next article. Powers the "Next step → …" link
    * at the bottom of every article. Omit on the last article.
@@ -47,24 +47,73 @@ export const WIKI_TRACKS: WikiTrack[] = [
     order: 1,
   },
   {
+    id: "concepts",
+    title: "How SmilePass works",
+    description: "The core model — clinics, locations, members and contracts — and what your patients see.",
+    order: 2,
+  },
+  {
     id: "building-plans",
     title: "Building your plans",
     description: "Design the memberships, payment plans, add-ons and discounts you'll offer.",
-    order: 2,
+    order: 3,
   },
   {
     id: "daily-operations",
     title: "Daily operations",
     description: "Onboard patients, take payments and watch the numbers move.",
-    order: 3,
+    order: 4,
+  },
+  {
+    id: "payments-billing",
+    title: "Payments & billing",
+    description: "How recurring charges, invoices, overdue handling, refunds and fees work.",
+    order: 5,
   },
   {
     id: "account-integrations",
-    title: "Account & integrations",
-    description: "Team management, marketing kit, third-party connections, billing and support.",
-    order: 4,
+    title: "Account, team & integrations",
+    description: "Team management, marketing kit, third-party connections and your pricing tier.",
+    order: 6,
+  },
+  {
+    id: "troubleshooting",
+    title: "Troubleshooting & FAQ",
+    description: "Common issues, what to check first, and how to get help.",
+    order: 7,
   },
 ];
+
+/* ─────────────────────────────────────────────────────────── */
+
+/**
+ * Content added in the latest wiki expansion. Drives the shared "New" badge
+ * across the index, track landings, side menu and article pages. Once a track
+ * or article has been reviewed and illustrated, remove its id/slug here to
+ * retire the badge — no other change needed.
+ */
+export const NEW_TRACK_IDS = new Set<string>([
+  "concepts",
+  "payments-billing",
+  "troubleshooting",
+]);
+
+export const NEW_ARTICLE_SLUGS = new Set<string>([
+  "how-smilepass-works",
+  "patient-signup-flow",
+  "plans-contracts-and-terms",
+  "included-services-and-procedures",
+  "service-discounts-explained",
+  "editing-a-live-plan",
+  "recurring-billing-cycle",
+  "invoices-and-statuses",
+  "overdue-and-failed-payments",
+  "refunds-and-disputes",
+  "fees-and-gst",
+  "common-issues",
+  "payment-declined",
+  "member-management-faq",
+]);
 
 /* ─────────────────────────────────────────────────────────── */
 
@@ -267,7 +316,7 @@ If you can call up these shortcuts without thinking, common tasks (book payment,
     lead: "Each clinic you operate is one Location. This is the form to set one up.",
     trackId: "getting-started",
     order: 4,
-    nextSlug: "membership-plans",
+    nextSlug: "how-smilepass-works",
     body: `
 ![Edit Location drawer showing Location Details + Profile Description fields](/images/wiki/practice-locations.png)
 *Settings → Locations → Edit. The drawer carries every field you need to fully configure one clinic.*
@@ -578,7 +627,7 @@ Build templates for the treatments you finance often. For a one-off custom plan,
     lead: "Dependent discounts, referral rewards, and promo codes.",
     trackId: "building-plans",
     order: 5,
-    nextSlug: "registering-patients",
+    nextSlug: "included-services-and-procedures",
     body: `
 ![Manage Discounts modal with Dependent Program and Referral Program toggles](/images/wiki/manage-discounts.png)
 *Settings → Custom Discounts & Code → Manage Discounts. Two switches, two percentages, lots of leverage.*
@@ -871,7 +920,7 @@ If you're not sure which type to use, default to **Instant Payment**. You can al
     lead: "Dashboard KPIs, referral tracking, and per-list status columns.",
     trackId: "daily-operations",
     order: 5,
-    nextSlug: "account-and-team",
+    nextSlug: "recurring-billing-cycle",
     body: `
 ![Dashboard KPI cards — Members, Retention and Total Revenue with goals](/images/wiki/tracking-results.png)
 *The dashboard's KPI strip is the at-a-glance view. The Reporting page and per-list status columns are the other two reporting surfaces.*
@@ -1144,7 +1193,7 @@ The integrations area will grow over time. Check back as your practice scales.
     lead: "The four pricing tiers and what each one includes.",
     trackId: "account-integrations",
     order: 4,
-    nextSlug: "billing-and-payouts",
+    nextSlug: "common-issues",
     body: `
 ![Subscription tier comparison — Free, Growth, Pro (Most Popular) and Enterprise](/images/wiki/subscription-tiers.png)
 *Settings → Subscription. Monthly / Yearly toggle, four tiers, fees printed per tier.*
@@ -1233,9 +1282,9 @@ Both show up in your [Billing & Payouts](/wiki/billing-and-payouts) Payment Hist
     slug: "billing-and-payouts",
     title: "Billing & payouts",
     lead: "How SmilePass charges your practice for paid features.",
-    trackId: "account-integrations",
-    order: 5,
-    nextSlug: "support",
+    trackId: "payments-billing",
+    order: 6,
+    nextSlug: "account-and-team",
     body: `
 ![Billing and Payout page with Add Card and Payment History sections](/images/wiki/billing-and-payouts.png)
 *Settings → Billing and Payout. Your card on file plus the audit trail of every charge SmilePass has made.*
@@ -1285,27 +1334,17 @@ The two flows are separate by design — your patient revenue lands directly in 
     slug: "support",
     title: "Getting help",
     lead: "How to open a support ticket and what happens after you do.",
-    trackId: "account-integrations",
-    order: 6,
+    trackId: "troubleshooting",
+    order: 4,
     body: `
 ![Support page with the New Request form on the left and ticket history on the right](/images/wiki/support.png)
-*Sidebar → Support. File a ticket on the left, watch its status on the right. Or just ask the chatbot — it can file the ticket for you.*
+*Sidebar → Support. File a ticket on the left, watch its status on the right.*
 
-SmilePass has three paths for getting help, in increasing order of formality.
+SmilePass has two paths for getting help.
 
-## 1. Ask the chatbot (fastest)
+## 1. Open a ticket yourself
 
-Open the chatbot from the launcher button at the bottom-right of any **Wiki** page. It's grounded in this knowledge base and will:
-
-- Answer most "how do I…" questions instantly
-- Cite which article it learned from so you can read the full context
-- If it can't answer, it can **open a support ticket** for you directly — no separate form to fill in
-
-Try the chatbot first for any straightforward question. It's much faster than waiting for a human reply.
-
-## 2. Open a ticket yourself
-
-If you prefer to write a ticket directly, click **Support** at the bottom of the left sidebar (or pick **Support** from the user avatar dropdown in the top bar). The page is split in two.
+Click **Support** at the bottom of the left sidebar (or pick **Support** from the user avatar dropdown in the top bar). The page is split in two.
 
 ### Open a new request (left)
 
@@ -1325,7 +1364,7 @@ A sortable table of every ticket you've opened. Columns: **Priority · Date · T
 
 Statuses cycle: **Open → In Progress → Waiting on user → Resolved → Closed**.
 
-## 3. Reach a human
+## 2. Reach a human
 
 For anything urgent — billing-impacting issues, security concerns, or escalations — use the [Contact us](/contact) form on the marketing site. That routes directly to the SmilePass team rather than the general support queue.
 
@@ -1348,7 +1387,457 @@ That wraps up the SmilePass wiki. From here you can:
 
 - [Return to the wiki index](/wiki)
 - [Contact a human](/contact)
-- Use the **chatbot** at the bottom-right for any specific question
+    `.trim(),
+  },
+
+  /* ─── Track: How SmilePass works (concepts) ─── */
+  {
+    slug: "how-smilepass-works",
+    title: "How SmilePass works",
+    lead: "The core model — clinics, locations, members, contracts — and what patients can and can't do.",
+    trackId: "concepts",
+    order: 1,
+    nextSlug: "patient-signup-flow",
+    body: `
+SmilePass is a **subscription and payments platform for dental clinics**. This article explains the moving parts so the rest of the wiki makes sense.
+
+## The core model
+
+- **Your clinic** is the account. A clinic can run one or more **locations** (individual practices/sites). Plans, members, payments and reporting are all scoped to a location.
+- You build **plans** — recurring memberships (and one-off payment plans) that your patients subscribe to.
+- A patient who signs up becomes a **member**, tied to a **contract**: the living record of what they pay, on what cycle, and which plan they're on.
+- SmilePass handles the recurring billing, renewals and reminders against that contract automatically.
+
+## What patients can (and can't) do
+
+Patients **do not log in**, and there is no patient dashboard. Their entire interaction with SmilePass is through one-time secure links:
+
+- a **signup link** to join a plan,
+- an **invoice link** to pay or update their card,
+- an **overdue link** if a payment fails.
+
+Everything else — creating plans, enrolling members, taking payments, reading reports — happens inside the clinic-facing app, run by your team.
+
+## Where to go next
+
+- New to the dashboard? Start with [Getting started](/wiki/onboarding-wizard).
+- Want to see what a patient experiences? See [the patient signup flow](/wiki/patient-signup-flow).
+- Ready to build a plan? Jump to [membership plans](/wiki/membership-plans).
+    `.trim(),
+  },
+  {
+    slug: "patient-signup-flow",
+    title: "The patient signup flow",
+    lead: "How a patient joins a plan, end to end — they never log in.",
+    trackId: "concepts",
+    order: 2,
+    nextSlug: "plans-contracts-and-terms",
+    body: `
+Patients never log in to SmilePass — they join through a single secure link. Here's the journey end to end.
+
+## 1. You create the invitation
+
+From the clinic app you create an invitation for the patient (or run the [Add New Member](/wiki/adding-members) wizard). SmilePass sends the patient **an email and an SMS**, each with the same join link.
+
+## 2. The patient opens the link
+
+The link opens a public signup page — no account, no password. It shows the plan(s) on offer, any add-ons, the terms, and the clinic's details.
+
+## 3. The patient pays and joins
+
+The patient enters their card details and confirms. SmilePass then:
+
+- creates their **member** record and an **active contract**,
+- records their acceptance of the terms,
+- charges the first payment, and
+- saves the card for the recurring cycle.
+
+## 4. Confirmation
+
+A welcome email goes to the patient, and your clinic is notified that a new member has joined. From there the contract bills automatically — see [the recurring billing cycle](/wiki/recurring-billing-cycle).
+
+> ⚠️ **Needs product validation** — the exact email/SMS wording and the on-screen steps the patient sees.
+
+> 📷 **Screenshot suggested:** the patient-facing signup page the patient opens from the link.
+    `.trim(),
+  },
+  {
+    slug: "plans-contracts-and-terms",
+    title: "Plans, contracts & terms",
+    lead: "What a member's contract contains and where to view it.",
+    trackId: "concepts",
+    order: 3,
+    nextSlug: "membership-plans",
+    body: `
+Every member is bound to a **contract** built from the plan they joined plus the global terms of use. Here's what it contains and where to find it.
+
+## Viewing a member's contract
+
+Open a member's record and choose **View Plan Contract**. A modal opens with two tabs.
+
+### Terms of Use — User Agreement
+
+The standard SmilePass user agreement (SmilePass Pty Ltd, Australian jurisdiction). It is **global** — the same legal text for every plan and every clinic.
+
+### My Plan
+
+A summary assembled from the member, their contract and the plan:
+
+- Member name
+- Plan name and description
+- Membership fee — setup fee, fee amount, and payment schedule (weekly / fortnightly / monthly / annually)
+- Included services and benefits — see [included services & procedures](/wiki/included-services-and-procedures)
+- Discounts on services and products — see [service discounts explained](/wiki/service-discounts-explained)
+- Terms — lock-in period, age range, and any plan-specific terms
+
+## The contract reflects the plan *as it is now*
+
+"My Plan" is composed live from the current plan record. If you edit the plan, the contract view changes for everyone on it — read [editing a live plan](/wiki/editing-a-live-plan) before making changes.
+
+> ⚠️ **Needs product validation** — exact button labels and modal layout.
+
+> 📷 **Screenshot suggested:** the "View Plan Contract" modal, showing both tabs.
+    `.trim(),
+  },
+
+  /* ─── Building your plans (additions) ─── */
+  {
+    slug: "included-services-and-procedures",
+    title: "Included services & procedures",
+    lead: "The four-field structure behind every benefit you add to a plan.",
+    trackId: "building-plans",
+    order: 6,
+    nextSlug: "service-discounts-explained",
+    body: `
+When you build a plan, **Included Services and benefits** is where you list what the membership actually gives the patient. You type these freely, but every benefit shares the same four-field structure.
+
+## The fields of a benefit
+
+- **Title** — free text. Examples: "Comprehensive Oral Examination", "Dental Exam & Clean", "Free Cosmetic Consultations".
+- **Annual quantity** — how many times per year it's included. **\`0\` renders as "Unlimited"** in the patient's contract.
+- **Waiting period (months)** — months after the contract start date before the benefit becomes available. \`0\` = no wait.
+- **Procedures included** — link the benefit to specific procedure codes from the SmilePass procedures list (matched by code + name).
+- **Additional notes** — free text shown as "Additional Notes" on the contract. Blank shows "No terms".
+
+## Tips
+
+- Be specific in the title — it's what the patient sees on their plan.
+- Use a waiting period to protect high-value benefits from sign-up-then-claim behaviour.
+- "Unlimited" (\`0\`) works well for low-cost, high-frequency benefits (exams, cleans) that drive perceived value.
+
+This pairs with the discount tiers — see [service discounts explained](/wiki/service-discounts-explained).
+
+> ⚠️ **Needs product validation** — exact field labels in the current builder.
+
+> 📷 **Screenshot suggested:** the Included Services section of the plan builder.
+    `.trim(),
+  },
+  {
+    slug: "service-discounts-explained",
+    title: "Service discounts explained",
+    lead: "The ten fixed discount categories and how to set them.",
+    trackId: "building-plans",
+    order: 7,
+    nextSlug: "editing-a-live-plan",
+    body: `
+Alongside included services, every plan carries a **fixed set of ten discount categories**. You can't add or remove categories — but you set a discount percentage and terms for each.
+
+## The ten categories (always in this order)
+
+1. Diagnostic Services
+2. Preventive, Prophylactic and Bleaching Services
+3. Periodontics
+4. Oral Surgery
+5. Endodontics
+6. Restorative Services
+7. Prosthodontics
+8. Orthodontics
+9. General Services
+10. Miscellaneous
+
+## How it works
+
+- Each category takes a **discount %** (default \`0\`) and an optional **terms** note.
+- A category left at \`0%\` shows no discount for that group on the contract.
+- Many clinics apply a flat percentage across all ten (e.g. 15% on everything); others mix per category.
+
+> ⚠️ **Needs product validation** — confirm whether the discount editor is exposed to clinic staff in the current UI, or configured with help from the SmilePass team. Verify before telling a clinic they can self-edit these.
+
+> 📷 **Screenshot suggested:** the discount-categories grid in the plan builder.
+    `.trim(),
+  },
+  {
+    slug: "editing-a-live-plan",
+    title: "Editing a live plan",
+    lead: "Plan edits are retroactive — how to change terms safely.",
+    trackId: "building-plans",
+    order: 8,
+    nextSlug: "registering-patients",
+    body: `
+This is the single most important thing to understand before you touch an existing plan.
+
+## Plan edits are retroactive
+
+A plan is a **living record**, not a snapshot taken at signup. If you change a plan — included services, discounts, fees or terms — **the change applies to every member on that plan, both new and existing**. There is no automatic versioning.
+
+## Changing terms *without* affecting current members
+
+To give new members new terms while existing members keep what they signed up for:
+
+1. **Create a new plan** with the updated terms.
+2. **Deactivate the old plan** (set its status to inactive) so no new members can join it.
+3. Existing members stay on the old plan; new members join the new one.
+
+This is the standard way to "version" a plan. It depends on you doing it deliberately — there's no automatic safety net.
+
+> ⚠️ **For support analysts:** when a member disputes "what they signed up for", remember the plan may have been edited since. Check whether the plan changed before assuming the current terms are what they accepted.
+
+> ⚠️ **Needs product validation** — exact location of the plan status / activate–deactivate control.
+
+> 📷 **Screenshot suggested:** the plan list showing an active plan vs an inactive one.
+    `.trim(),
+  },
+
+  /* ─── Track: Payments & billing ─── */
+  {
+    slug: "recurring-billing-cycle",
+    title: "The recurring billing cycle",
+    lead: "How automatic charges, cycles and renewals work.",
+    trackId: "payments-billing",
+    order: 1,
+    nextSlug: "invoices-and-statuses",
+    body: `
+Once a member has an active contract, SmilePass charges their saved card automatically on the plan's cycle. You don't run charges by hand.
+
+## Cycles
+
+A plan's fee is charged on its **payment schedule**: weekly, fortnightly, monthly, or annually. The first charge happens at signup; subsequent charges follow the cycle from the contract start date.
+
+## What runs automatically
+
+- **Recurring charges** on each member's cycle.
+- **Renewals** — the contract's next billing date advances each cycle.
+- **Invoice emails** with a secure single-use link to view or pay.
+- **Reminders / overdue notices** when a payment is late — see [overdue & failed payments](/wiki/overdue-and-failed-payments).
+
+## Payment plans vs memberships
+
+Memberships bill open-endedly on a cycle. **Payment plans** instead bill a fixed treatment cost across a set number of instalments — see [payment plans](/wiki/payment-plans) and [taking payments](/wiki/taking-payments).
+
+> ⚠️ **Needs product validation** — exact charge timing (time of day, first-charge proration) and which screen shows upcoming charges.
+
+> 📷 **Screenshot suggested:** a member's contract showing the billing schedule / next charge date.
+    `.trim(),
+  },
+  {
+    slug: "invoices-and-statuses",
+    title: "Invoices & statuses",
+    lead: "The invoice lifecycle and what each status means.",
+    trackId: "payments-billing",
+    order: 2,
+    nextSlug: "overdue-and-failed-payments",
+    body: `
+Every charge SmilePass attempts creates an **invoice** you can track.
+
+## Where to find invoices
+
+In the payments area each invoice shows the member, amount, date and a **status**.
+
+## Invoice statuses
+
+Invoices move through states such as:
+
+- **Due / Processing** — created, charge in progress.
+- **Paid / Complete** — successfully charged.
+- **Overdue** — the charge failed or wasn't paid in time (see [overdue & failed payments](/wiki/overdue-and-failed-payments)).
+- **Blocked** — needs attention before it can be charged.
+- **Cancelled** — voided, won't be charged.
+
+> ⚠️ **Needs product validation** — the exact status names shown in the clinic UI and what triggers each transition. The list above reflects the underlying system states and may differ from the on-screen labels.
+
+> 📷 **Screenshot suggested:** the invoices list with the status column.
+    `.trim(),
+  },
+  {
+    slug: "overdue-and-failed-payments",
+    title: "Overdue & failed payments",
+    lead: "Retries, notifications and what happens when a charge fails.",
+    trackId: "payments-billing",
+    order: 3,
+    nextSlug: "refunds-and-disputes",
+    body: `
+When a member's card fails or a payment is missed, SmilePass doesn't just give up — it follows an automated overdue process.
+
+## What happens when a charge fails
+
+- The invoice is marked **overdue**.
+- SmilePass **retries** the charge automatically, on a schedule.
+- The member is notified (email/SMS) with a secure link to pay or update their card.
+- If it stays unpaid, the **contract** can move to an overdue state.
+
+## Card expiration
+
+SmilePass checks for **expiring cards** and prompts the member to update their details before the next charge fails.
+
+## What the clinic should do
+
+- Watch for members in an overdue state in the payments list.
+- Encourage the member to use the payment link they were sent.
+
+> ⚠️ **Needs product validation** — retry count and schedule, exact notification wording, and when (if ever) a contract auto-cancels vs needs manual action. These behaviours exist in the system but the specifics must be confirmed before publishing.
+
+> 📷 **Screenshot suggested:** an overdue member, or the overdue notice the member receives.
+    `.trim(),
+  },
+  {
+    slug: "refunds-and-disputes",
+    title: "Refunds & disputes",
+    lead: "Issuing refunds and handling chargebacks (scaffold for validation).",
+    trackId: "payments-billing",
+    order: 4,
+    nextSlug: "fees-and-gst",
+    body: `
+> ⚠️ **Needs product validation** — this article is a scaffold. The refund and dispute flow exists in the system, but the clinic-facing steps need confirmation before publishing.
+
+## Issuing a refund
+
+Outline to confirm:
+
+- Where in the member/payment record the refund action lives.
+- Whether full and partial refunds are both supported.
+- How a refund appears in the member's history and on the clinic's payout.
+
+> 📷 **Screenshot suggested:** the refund action on a member's payment record.
+
+## Disputes & chargebacks
+
+- How a card dispute/chargeback surfaces to the clinic.
+- What the clinic is expected to do, and what SmilePass handles.
+
+## Payout impact
+
+Refunds adjust the clinic's **payout** — see [billing & payouts](/wiki/billing-and-payouts).
+    `.trim(),
+  },
+  {
+    slug: "fees-and-gst",
+    title: "Fees & GST",
+    lead: "Transaction fees, subscription fees and tax.",
+    trackId: "payments-billing",
+    order: 5,
+    nextSlug: "billing-and-payouts",
+    body: `
+SmilePass charges your practice in two ways: your **subscription tier** and **transaction fees** on the payments it processes.
+
+## Transaction fees
+
+Each pricing tier has a per-transaction percentage on member payments. Current rates are on the [pricing](/wiki/pricing) article and the public [pricing page](/pricing).
+
+## GST and tax
+
+> ⚠️ **Needs product validation** — how GST (10%) is handled on memberships and on SmilePass's own fees, and whether invoices are GST-compliant (ABN, line items, tax breakdown). Confirm with the product/finance team before publishing tax guidance clinics will rely on.
+
+## Where fees show up
+
+Fees and your practice's charges appear in [billing & payouts](/wiki/billing-and-payouts), separate from the patient payments that flow to your bank account.
+    `.trim(),
+  },
+
+  /* ─── Track: Troubleshooting & FAQ ─── */
+  {
+    slug: "common-issues",
+    title: "Common issues",
+    lead: "A first-stop checklist for the most frequent questions.",
+    trackId: "troubleshooting",
+    order: 1,
+    nextSlug: "payment-declined",
+    body: `
+A first-stop checklist for the questions clinics ask most. Each points to the deeper article.
+
+> ⚠️ **Needs product validation** — confirm each answer against current product behaviour; this is seeded from common patterns.
+
+## "My patient didn't get their signup link"
+
+Check the email/SMS on file is correct, then re-send the invitation. See [the patient signup flow](/wiki/patient-signup-flow).
+
+## "A payment failed / a member is overdue"
+
+SmilePass retries automatically and notifies the member. See [overdue & failed payments](/wiki/overdue-and-failed-payments).
+
+## "I changed a plan and existing members were affected"
+
+Plan edits are retroactive. See [editing a live plan](/wiki/editing-a-live-plan).
+
+## "A discount or benefit isn't showing on a contract"
+
+Check the plan's included services and discount categories — see [included services & procedures](/wiki/included-services-and-procedures).
+
+## Still stuck?
+
+See [getting help](/wiki/support).
+    `.trim(),
+  },
+  {
+    slug: "payment-declined",
+    title: "Payment declined",
+    lead: "What happens when a member's card is declined, and what to do.",
+    trackId: "troubleshooting",
+    order: 2,
+    nextSlug: "member-management-faq",
+    body: `
+> ⚠️ **Needs product validation** — confirm the exact member-facing and clinic-facing behaviour before publishing.
+
+When a member's payment is declined:
+
+## What SmilePass does
+
+- Marks the invoice **overdue** and **retries** on a schedule.
+- Sends the member a secure link to pay or update their card.
+
+## What the clinic can do
+
+- Confirm the member's card isn't expired (SmilePass also checks this automatically).
+- Ask the member to complete payment via the link they were sent.
+- Watch the payments list for the invoice to clear.
+
+## Common causes
+
+- Expired or cancelled card.
+- Insufficient funds.
+- A bank fraud-block on a new recurring merchant.
+
+For the full process see [overdue & failed payments](/wiki/overdue-and-failed-payments).
+    `.trim(),
+  },
+  {
+    slug: "member-management-faq",
+    title: "Member management FAQ",
+    lead: "Pausing, cancelling, transferring and member statuses.",
+    trackId: "troubleshooting",
+    order: 3,
+    nextSlug: "support",
+    body: `
+> ⚠️ **Needs product validation** — member lifecycle actions exist in the system, but the clinic-facing steps and rules (proration, timing) must be confirmed before publishing.
+
+## Can a member pause their membership?
+
+[Confirm] — whether pause/resume is supported and how.
+
+## How do I cancel a membership?
+
+[Confirm] — the cancellation action, any lock-in / minimum-period implications, and whether a final or partial charge applies.
+
+## Can I move a member to a different plan?
+
+[Confirm] — the upgrade/downgrade path and how billing changes.
+
+## What do the member statuses mean?
+
+A member's contract can be **active, scheduled, suspended, overdue, or cancelled**. [Confirm the exact meaning of each and what triggers it.]
+
+## Transfers & dependents
+
+Dependents are added during signup — see [adding members](/wiki/adding-members). [Confirm transfer rules between account holders.]
     `.trim(),
   },
 ];

@@ -3,8 +3,11 @@ import Link from "next/link";
 import RequestDemoButton from "@/components/forms/RequestDemoButton";
 import WikiSideMenu from "@/components/wiki/WikiSideMenu";
 import PageHero from "@/components/common/PageHero";
+import NewBadge from "@/components/wiki/NewBadge";
 import {
   WIKI_TRACKS,
+  NEW_TRACK_IDS,
+  NEW_ARTICLE_SLUGS,
   getArticlesInTrack,
   wikiArticlePath,
   wikiTrackPath,
@@ -52,10 +55,9 @@ export default function WikiIndexPage() {
         }
         description={
           <>
-            Step-by-step documentation for practice staff, organised into four
+            Step-by-step documentation for practice staff, organised into
             tracks you can follow in order or dip into when you need a
-            specific answer. Need help right now? Open the chat at the
-            bottom-right of any article.
+            specific answer.
           </>
         }
       />
@@ -81,9 +83,12 @@ export default function WikiIndexPage() {
                       className="group bg-bone rounded-2xl border border-divider p-7 hover:border-brand-purple transition-colors reveal scroll-mt-24"
                       style={{ animationDelay: `${idx * 60}ms` }}
                     >
-                      <p className="text-[0.7rem] font-semibold tracking-[0.18em] uppercase text-brand-purple mb-3">
-                        Track {track.order}
-                      </p>
+                      <div className="flex items-center gap-2 mb-3">
+                        <p className="text-[0.7rem] font-semibold tracking-[0.18em] uppercase text-brand-purple">
+                          Track {track.order}
+                        </p>
+                        {NEW_TRACK_IDS.has(track.id) && <NewBadge />}
+                      </div>
                       <h2
                         className="text-purple-deep text-[1.35rem] lg:text-[1.5rem] mb-2"
                         style={{ fontWeight: 500, lineHeight: 1.1, letterSpacing: "-0.005em" }}
@@ -116,6 +121,7 @@ export default function WikiIndexPage() {
                             >
                               {a.title}
                             </Link>
+                            {NEW_ARTICLE_SLUGS.has(a.slug) && <NewBadge className="mt-0.5" />}
                           </li>
                         ))}
                       </ul>
@@ -143,8 +149,7 @@ export default function WikiIndexPage() {
               </h3>
               <p className="text-[0.95rem] text-purple-deep/75 leading-relaxed mb-5">
                 You can sign up free at any time — no demo booking required.
-                If you&apos;d rather a hand getting set up, the chatbot bottom-right
-                can answer most questions instantly, or drop us a line.
+                If you&apos;d rather a hand getting set up, drop us a line.
               </p>
               <div className="flex flex-wrap gap-3">
                 <a

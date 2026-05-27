@@ -4,15 +4,15 @@ import { resolveWikiHref } from "@/data/wiki/articles";
 import { resolveStrategyHref } from "@/data/strategy/strategies";
 
 /**
- * Shared Markdown renderer for wiki articles, strategy plays, and chatbot
- * replies — the single place that renders `react-markdown` in the app.
+ * Shared Markdown renderer for wiki articles and strategy plays — the single
+ * place that renders `react-markdown` in the app.
  *
- * Article/strategy bodies (and chatbot replies) author internal links in the
- * flat form `/wiki/<slug>` and `/strategy/<slug>` because that's the natural
- * way to write them. The canonical routes are nested
- * (`/wiki/<track>/<slug>`, `/strategy/<category>/<slug>`), so we rewrite those
- * hrefs at render time instead of forcing authors to encode the parent
- * segment or maintaining a wall of redirects.
+ * Article/strategy bodies author internal links in the flat form
+ * `/wiki/<slug>` and `/strategy/<slug>` because that's the natural way to
+ * write them. The canonical routes are nested (`/wiki/<track>/<slug>`,
+ * `/strategy/<category>/<slug>`), so we rewrite those hrefs at render time
+ * instead of forcing authors to encode the parent segment or maintaining a
+ * wall of redirects.
  */
 export function rewriteDocHref(href: string): string {
   const wiki = href.match(/^\/wiki\/([a-z0-9-]+)\/?$/);
